@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+
+# Outputs of compress.py / decompress.py / eval.py
+*_K*_posQ*.csv
+data/SemanticKITTI/
+data/Ford/
