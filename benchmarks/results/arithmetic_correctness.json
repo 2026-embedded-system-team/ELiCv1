@@ -1,0 +1,58 @@
+{
+  "correctness": "passed",
+  "cases": 447,
+  "checks": [
+    "byte equality",
+    "intermediate buffers",
+    "all 16 symbols",
+    "empty and single-symbol streams",
+    "random chunk boundaries",
+    "bidirectional decode",
+    "encoder and decoder reset",
+    "bytes consumed/remaining",
+    "unit-frequency boundary CDFs",
+    "long E3 pending-bit runs"
+  ],
+  "benchmarks": [],
+  "compiler": "C:\\Users\\LinkZelda\\msys64\\mingw64\\bin\\g++.EXE",
+  "reference_sha256": "826fc4620055a63ef170c4e27c44a1e1821ae9c36da3940a28b8b10499dba5ae",
+  "core_sha256": "a577a37d34fa9f3071b024d995825cd1afae6973437f1541b817257a250919bc",
+  "binding_sha256": "58eab92e34f69df6ae4af95fadad3319074de85254067bec1adf2470934207e5",
+  "harness_sha256": "3ebf79897275622c89fa7d63598d71f4f930398ead0a56d86e2bd8637b5e5e33",
+  "measurement_scope": "standalone CPU integer arithmetic core; excludes Torch adapters, GPU, neural network and I/O",
+  "geometry_histogram_inputs": [
+    {
+      "file": "data\\FordExample\\sample_0001.ply",
+      "quantization": 16,
+      "input_points": 80332,
+      "layers": 12,
+      "symbols": 473362,
+      "cdf_model": "per-layer empirical 16-way occupancy histogram; not neural CDF"
+    },
+    {
+      "file": "data\\FordExample\\sample_0002.ply",
+      "quantization": 16,
+      "input_points": 80278,
+      "layers": 12,
+      "symbols": 473004,
+      "cdf_model": "per-layer empirical 16-way occupancy histogram; not neural CDF"
+    },
+    {
+      "file": "data\\SemanticKITTIExample\\sample_0001.ply",
+      "quantization": 16,
+      "input_points": 126012,
+      "layers": 12,
+      "symbols": 496866,
+      "cdf_model": "per-layer empirical 16-way occupancy histogram; not neural CDF"
+    },
+    {
+      "file": "data\\SemanticKITTIExample\\sample_0002.ply",
+      "quantization": 16,
+      "input_points": 125756,
+      "layers": 12,
+      "symbols": 492680,
+      "cdf_model": "per-layer empirical 16-way occupancy histogram; not neural CDF"
+    }
+  ],
+  "geometry_histogram_correctness_cases": 4
+}

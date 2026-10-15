@@ -1,0 +1,7 @@
+{
+  "status": "unavailable",
+  "reason": "Installed MSVC compiler cannot find the Windows SDK/UCRT header assert.h (fatal C1083). No environment packages were installed. Standalone shared production integer core and ctypes APIs were compiled and verified; the actual Torch extension could not be compiled in this environment.",
+  "build_log": "reports/arithmetic_torch_build.log",
+  "binding_sha256": "58eab92e34f69df6ae4af95fadad3319074de85254067bec1adf2470934207e5",
+  "core_sha256": "a577a37d34fa9f3071b024d995825cd1afae6973437f1541b817257a250919bc"
+}

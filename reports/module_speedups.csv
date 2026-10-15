@@ -1,0 +1,72 @@
+﻿scope,module,sample,baseline_ms,optimized_ms,speedup
+real_geometry_cpu,morton3_code,data\FordExample\sample_0001.ply,1.4995,0.9677,1.5495504805208227
+real_geometry_cpu,morton3_sort,data\FordExample\sample_0001.ply,264.7,9.0835,29.14074971101447
+real_geometry_cpu,down_once,data\FordExample\sample_0001.ply,2.4962,1.792,1.3929687499999999
+real_geometry_cpu,build_hierarchy,data\FordExample\sample_0001.ply,243.3267,19.5006,12.477908372050091
+real_geometry_cpu,upscale_feature,data\FordExample\sample_0001.ply,28.8364,4.0815,7.065147617297562
+real_geometry_cpu,upscale_coordinate,data\FordExample\sample_0001.ply,18.0881,4.6806,3.8644831859163356
+real_geometry_cpu,upscale_coordinate_feature,data\FordExample\sample_0001.ply,34.535,5.7088,6.04943245515695
+real_geometry_cpu,morton3_code,data\FordExample\sample_0002.ply,1.1422,0.9709,1.1764342362756206
+real_geometry_cpu,morton3_sort,data\FordExample\sample_0002.ply,204.907,7.7092,26.57954132724537
+real_geometry_cpu,down_once,data\FordExample\sample_0002.ply,2.5424,1.8692,1.3601540766103146
+real_geometry_cpu,build_hierarchy,data\FordExample\sample_0002.ply,223.0855,18.2054,12.253809309325804
+real_geometry_cpu,upscale_feature,data\FordExample\sample_0002.ply,20.3137,4.3751,4.643025302278805
+real_geometry_cpu,upscale_coordinate,data\FordExample\sample_0002.ply,17.2508,5.2394,3.2925144100469526
+real_geometry_cpu,upscale_coordinate_feature,data\FordExample\sample_0002.ply,36.1126,5.812,6.2134549208534064
+real_geometry_cpu,morton3_code,data\SemanticKITTIExample\sample_0001.ply,2.4172,1.728,1.3988425925925925
+real_geometry_cpu,morton3_sort,data\SemanticKITTIExample\sample_0001.ply,348.8575,14.1951,24.57590999711168
+real_geometry_cpu,down_once,data\SemanticKITTIExample\sample_0001.ply,5.1959,3.0919,1.6804877259937256
+real_geometry_cpu,build_hierarchy,data\SemanticKITTIExample\sample_0001.ply,370.9272,28.0469,13.225247710085608
+real_geometry_cpu,upscale_feature,data\SemanticKITTIExample\sample_0001.ply,29.4581,6.0815,4.843887198881855
+real_geometry_cpu,upscale_coordinate,data\SemanticKITTIExample\sample_0001.ply,27.7848,7.6004,3.6557023314562396
+real_geometry_cpu,upscale_coordinate_feature,data\SemanticKITTIExample\sample_0001.ply,60.5973,10.5034,5.7693032732258125
+real_geometry_cpu,morton3_code,data\SemanticKITTIExample\sample_0002.ply,2.4144,1.9113,1.2632239836760322
+real_geometry_cpu,morton3_sort,data\SemanticKITTIExample\sample_0002.ply,343.1399,13.4941,25.428883734372803
+real_geometry_cpu,down_once,data\SemanticKITTIExample\sample_0002.ply,4.5087,2.9659,1.5201793721973096
+real_geometry_cpu,build_hierarchy,data\SemanticKITTIExample\sample_0002.ply,344.7493,22.6229,15.23895256576301
+real_geometry_cpu,upscale_feature,data\SemanticKITTIExample\sample_0002.ply,28.205,6.1169,4.610995765829096
+real_geometry_cpu,upscale_coordinate,data\SemanticKITTIExample\sample_0002.ply,26.8551,7.4079,3.6251974243712795
+real_geometry_cpu,upscale_coordinate_feature,data\SemanticKITTIExample\sample_0002.ply,58.046,11.9618,4.852614155060275
+offline_boe_cpu,boe_offline_sort_histograms,data\FordExample\sample_0001.ply,68.7839,1.2011,57.267421530263924
+offline_boe_cpu,boe_offline_collect,data\FordExample\sample_0001.ply,275.0657,22.5817,12.180911977397626
+offline_boe_cpu,boe_offline_sort_histograms,data\FordExample\sample_0002.ply,71.014,1.1491,61.79966930641371
+offline_boe_cpu,boe_offline_collect,data\FordExample\sample_0002.ply,278.9513,21.1375,13.196986398580721
+offline_boe_cpu,boe_offline_sort_histograms,data\SemanticKITTIExample\sample_0001.ply,93.999,1.7991,52.24779056194764
+offline_boe_cpu,boe_offline_collect,data\SemanticKITTIExample\sample_0001.ply,429.7621,28.967,14.836265405461386
+offline_boe_cpu,boe_offline_sort_histograms,data\SemanticKITTIExample\sample_0002.ply,102.2419,1.6649,61.41023484893987
+offline_boe_cpu,boe_offline_collect,data\SemanticKITTIExample\sample_0002.ply,456.5659,33.0851,13.79974369126888
+io_cpu,PLY read,data\FordExample\sample_0001.ply,157.8986,38.8092,4.068586829926924
+io_cpu,PLY write,data\FordExample\sample_0001.ply,198.4799,131.8874,1.5049193478679537
+io_cpu,PLY read,data\FordExample\sample_0002.ply,175.5721,47.2337,3.7170939392848754
+io_cpu,PLY write,data\FordExample\sample_0002.ply,200.8578,132.5201,1.5156779990356177
+io_cpu,PLY read,data\SemanticKITTIExample\sample_0001.ply,334.9477,67.9074,4.932418263694384
+io_cpu,PLY write,data\SemanticKITTIExample\sample_0001.ply,310.6554,206.0988,1.5073129974555892
+io_cpu,PLY read,data\SemanticKITTIExample\sample_0002.ply,368.3512,77.6577,4.743266926524994
+io_cpu,PLY write,data\SemanticKITTIExample\sample_0002.ply,346.6742,232.3123,1.4922765604748436
+io_cpu,Batch read sequential,all four real samples,1082.8711,238.0885,4.548187333701544
+io_cpu,Batch read auto,all four real samples,1036.6882,230.5008,4.497547080096902
+synthetic_100k_cpu,morton_sort,100000,335.9527,12.9576,25.927077545224424
+synthetic_100k_cpu,down_once,100000,3.7281,2.5812,1.444328219432822
+synthetic_100k_cpu,upscale_feature,100000,28.7324,6.2072,4.628882587962366
+synthetic_100k_cpu,upscale_coordinate,100000,24.074,6.1178,3.935074700055576
+synthetic_100k_cpu,upscale_coordinate_feature,100000,50.1365,8.2864,6.050456169144622
+synthetic_100k_cpu,hierarchy,100000,338.9861,34.5755,9.804228427643853
+synthetic_100k_cpu,cdf_normalization,100000,3.0152,2.7594,1.0927013118793942
+synthetic_100k_cpu,cdf_normalization_64,100000,0.0295,0.019,1.5526315789473684
+synthetic_100k_cpu,cdf_normalization_4096,100000,0.1412,0.1301,1.0853189853958494
+arithmetic_integer_core_cpu,arithmetic_encode,uniform,10.5185,3.0377,3.46265
+arithmetic_integer_core_cpu,arithmetic_decode,uniform,13.909899999999999,9.7727,1.42334
+arithmetic_integer_core_cpu,arithmetic_encode,concentrated,1.4818,1.5687,0.944604
+arithmetic_integer_core_cpu,arithmetic_decode,concentrated,3.8841,3.4046,1.14084
+arithmetic_integer_core_cpu,arithmetic_encode,random_weighted,15.205400000000001,9.052100000000001,1.67976
+arithmetic_integer_core_cpu,arithmetic_decode,random_weighted,23.997799999999998,13.294699999999999,1.80507
+arithmetic_integer_core_cpu,arithmetic_encode,random_rare_symbols,17.128600000000002,8.5579,2.0015
+arithmetic_integer_core_cpu,arithmetic_decode,random_rare_symbols,27.317500000000003,13.4766,2.02703
+arithmetic_integer_core_cpu,arithmetic_encode,histogram_Ford_sample_0001,11.6498,8.496500000000001,1.37113
+arithmetic_integer_core_cpu,arithmetic_decode,histogram_Ford_sample_0001,16.0535,11.8466,1.35511
+arithmetic_integer_core_cpu,arithmetic_encode,histogram_Ford_sample_0002,14.121500000000001,7.0391,2.00615
+arithmetic_integer_core_cpu,arithmetic_decode,histogram_Ford_sample_0002,16.6462,12.8541,1.29501
+arithmetic_integer_core_cpu,arithmetic_encode,histogram_SemanticKITTI_sample_0001,12.406199999999998,7.8315,1.58414
+arithmetic_integer_core_cpu,arithmetic_decode,histogram_SemanticKITTI_sample_0001,16.7917,11.8196,1.42067
+arithmetic_integer_core_cpu,arithmetic_encode,histogram_SemanticKITTI_sample_0002,13.9997,8.1619,1.71525
+arithmetic_integer_core_cpu,arithmetic_decode,histogram_SemanticKITTI_sample_0002,16.8946,11.960099999999999,1.41258

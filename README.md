@@ -1,5 +1,7 @@
 # [CVPR 2026] ELiC: Efficient LiDAR Geometry Compression via Cross-Bit-depth Feature Propagation and Bag-of-Encoders
 
+本工作区的性能优化、逐模块实测和回归方法见 [OPTIMIZATION.md](OPTIMIZATION.md)。
+
 [![arXiv](https://img.shields.io/badge/Arxiv-2503.12382-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2511.14070)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](LICENSE.md)
 
@@ -9,10 +11,10 @@
 
 This repository is the offical PyTorch implementation of our paper *Efficient LiDAR Geometry Compression via Cross-Bit-depth Feature Propagation and Bag-of-Encoders*.
 
-## 🎯 Abstract  
+## 🎯 Abstract
 
-Hierarchical LiDAR geometry compression encodes voxel occupancies from low to high bit-depths, yet prior methods treat each depth independently and re-estimate local context from coordinates at every level, limiting compression efficiency. We present ELiC, a real-time framework that combines cross-bit-depth feature propagation, a Bag-of-Encoders (BoE) selection scheme, and a Morton-order-preserving hierarchy. Cross-bit-depth propagation reuses features extracted at denser, lower depths to support prediction at sparser, higher depths. 
-BoE selects, per depth, the most suitable coding network from a small pool, adapting capacity to observed occupancy statistics without training a separate model for each level. The Morton hierarchy maintains global Z-order across depth transitions, eliminating per-level sorting and reducing latency. Together these components improve entropy modeling and computation efficiency, yielding state-of-the-art compression at real-time throughput on Ford and SemanticKITTI. 
+Hierarchical LiDAR geometry compression encodes voxel occupancies from low to high bit-depths, yet prior methods treat each depth independently and re-estimate local context from coordinates at every level, limiting compression efficiency. We present ELiC, a real-time framework that combines cross-bit-depth feature propagation, a Bag-of-Encoders (BoE) selection scheme, and a Morton-order-preserving hierarchy. Cross-bit-depth propagation reuses features extracted at denser, lower depths to support prediction at sparser, higher depths.
+BoE selects, per depth, the most suitable coding network from a small pool, adapting capacity to observed occupancy statistics without training a separate model for each level. The Morton hierarchy maintains global Z-order across depth transitions, eliminating per-level sorting and reducing latency. Together these components improve entropy modeling and computation efficiency, yielding state-of-the-art compression at real-time throughput on Ford and SemanticKITTI.
 
 ## ⚙️ Usage
 
@@ -68,12 +70,12 @@ python decompress.py \
   --channels=32 \
   --kernel_size=3 \
   --ckpt=./here/checkpoint/model.pt
-``` 
+```
 
 *--input_glob*: Glob pattern to locate compressed .bin files.
 
 *--output_folder*: Directory to save compressed output (e.g., .ply files).
- 
+
 *--is_data_pre_quantized*: Set True if input is already quantized (integer coordinates). Default: False, <span style="color:red">If False, do not specify this option.</span>
 
 *--channels*: Number of neural network feature channels. Default: 32 (use 64 for ELiC-Large)
@@ -91,7 +93,7 @@ python BoE_cluster.py \
   --train_data=./here/training/dataset/*.bin \
   --model_save_folder=./here/model/directory/ \
   --K=5 \
-  --is_data_pre_quantized=True 
+  --is_data_pre_quantized=True
 ```
 
 *--train_data*: Glob pattern pointing to the training dataset.
@@ -163,7 +165,7 @@ patented technologies may require a separate patent license from ETRI.
 
 Parts of this codebase are inspired by the implementation of
 
-RENO: Real-Time Neural Compression for 3D LiDAR Point Clouds  
+RENO: Real-Time Neural Compression for 3D LiDAR Point Clouds
 https://github.com/NJUVISION/RENO
 
 We appreciate the authors for making their code publicly available.
@@ -172,8 +174,8 @@ Please refer to the original repository for the baseline implementation.
 <!--
 ---
 
-> 📌 **Note**  
-> This README is a work in progress and will be continuously updated.  
+> 📌 **Note**
+> This README is a work in progress and will be continuously updated.
 > Please check back later for more detailed instructions, extended usage examples, and additional dataset support.
 -->
 

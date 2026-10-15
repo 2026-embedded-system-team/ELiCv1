@@ -1,0 +1,84 @@
+{
+  "method": "Sum per-frame component medians, then baseline_sum / optimized_sum; not average speedups",
+  "frame_count": 4,
+  "total_input_points": 412378,
+  "workflows": [
+    {
+      "workflow": "hierarchy",
+      "label": "完整几何层级构建",
+      "frames": 4,
+      "baseline_total_ms": 1182.0887,
+      "optimized_total_ms": 88.3758,
+      "baseline_mean_ms": 295.522175,
+      "optimized_mean_ms": 22.09395,
+      "speedup": 13.375705792762272,
+      "time_reduction_percent": 92.5237590038717,
+      "source": "benchmarks/results_morton.json",
+      "scope": "CPU, posQ=16; includes Morton sorting and all downsampling levels"
+    },
+    {
+      "workflow": "boe_offline",
+      "label": "BoE 离线完整直方图收集",
+      "frames": 4,
+      "baseline_total_ms": 1440.345,
+      "optimized_total_ms": 105.7713,
+      "baseline_mean_ms": 360.08625,
+      "optimized_mean_ms": 26.442825,
+      "speedup": 13.61754086410964,
+      "time_reduction_percent": 92.65653020630474,
+      "source": "reports/boe_cpu.json",
+      "scope": "CPU, posQ=4; includes its own hierarchy; excludes KMeans/TSNE and data loading"
+    },
+    {
+      "workflow": "io_read_write",
+      "label": "PLY 读取＋写出",
+      "frames": 4,
+      "baseline_total_ms": 2093.4369,
+      "optimized_total_ms": 934.4266,
+      "baseline_mean_ms": 523.359225,
+      "optimized_mean_ms": 233.60665,
+      "speedup": 2.240343864354889,
+      "time_reduction_percent": 55.36399496922979,
+      "source": "reports/io_benchmark.json",
+      "scope": "Sum of single-file read and write medians; excludes batch-reader rows"
+    },
+    {
+      "workflow": "arithmetic_roundtrip",
+      "label": "整数算术编码＋解码",
+      "frames": 4,
+      "baseline_total_ms": 118.5632,
+      "optimized_total_ms": 80.0094,
+      "baseline_mean_ms": 29.6408,
+      "optimized_mean_ms": 20.00235,
+      "speedup": 1.4818658807590108,
+      "time_reduction_percent": 32.51750964886237,
+      "source": "reports/arithmetic_benchmark.json",
+      "scope": "Actual occupancy symbols with empirical CDF; excludes neural prediction, CDF generation and Torch adapters"
+    }
+  ],
+  "measured_cpu_cost_budget": {
+    "workflow": "measured_cpu_cost_budget",
+    "label": "已测 CPU 阶段成本合计（分析值）",
+    "frames": 4,
+    "baseline_total_ms": 3394.0888,
+    "optimized_total_ms": 1102.8118,
+    "baseline_mean_ms": 848.5222,
+    "optimized_mean_ms": 275.70295,
+    "speedup": 3.0776681932492926,
+    "time_reduction_percent": 67.50786838576528,
+    "source": [
+      "benchmarks/results_morton.json",
+      "reports/io_benchmark.json",
+      "reports/arithmetic_benchmark.json"
+    ],
+    "scope": "Analytical sum of separate component medians; NOT a timed end-to-end neural codec run"
+  },
+  "full_neural_pipeline_status": "unavailable",
+  "exclusions": [
+    "Neural sparse convolutions and prediction",
+    "Full decoder upsampling across all levels",
+    "Actual model CDF generation and normalization workload",
+    "CPU/GPU transfers and synchronization",
+    "Model/JIT startup, total peak memory and full neural compression rate"
+  ]
+}

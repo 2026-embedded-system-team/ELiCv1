@@ -1,0 +1,735 @@
+{
+  "torch_version": "2.12.0+cpu",
+  "python_version": "3.13.12",
+  "platform": "Windows-11-10.0.26100-SP0",
+  "device": "cpu",
+  "threads": 1,
+  "warmup": 2,
+  "repeats": 7,
+  "channels": 32,
+  "posq": 16,
+  "prequantized": "auto",
+  "timer": "perf_counter_ns; median; alternating pair order; CUDA synchronize when applicable",
+  "samples": [
+    {
+      "file": "data\\FordExample\\sample_0001.ply",
+      "source_sha256": "eeeaf871813f0e4c7dbaba567f79eb71b7add11a0df6a8cd506480baf14e7258",
+      "prequantized": true,
+      "quantized_coords_sha256": "176779094e7eaa4a293702b132de8e9081ab32058cf33e64adf8ccd2cf5fb259",
+      "input_points": 80332,
+      "unique_voxels": 77330,
+      "parent_voxels": 75104,
+      "hierarchy_levels": 12,
+      "stages": {
+        "morton3_code": {
+          "baseline_ms": 1.4995,
+          "optimized_ms": 0.9677,
+          "speedup": 1.5495504805208227,
+          "baseline_samples_ms": [
+            1.8991,
+            1.1499,
+            3.0208,
+            1.5108,
+            1.4995,
+            1.1287,
+            1.1505
+          ],
+          "optimized_samples_ms": [
+            0.9677,
+            0.9256,
+            2.2463,
+            1.7166,
+            1.7103,
+            0.9133,
+            0.9625
+          ],
+          "forward_exact": true
+        },
+        "morton3_sort": {
+          "baseline_ms": 264.7,
+          "optimized_ms": 9.0835,
+          "speedup": 29.14074971101447,
+          "baseline_samples_ms": [
+            214.0714,
+            264.7,
+            274.2216,
+            244.4028,
+            274.0277,
+            284.2524,
+            200.6425
+          ],
+          "optimized_samples_ms": [
+            7.5597,
+            7.5719,
+            7.3229,
+            11.6794,
+            12.6512,
+            9.8123,
+            9.0835
+          ],
+          "forward_exact": true
+        },
+        "down_once": {
+          "baseline_ms": 2.4962,
+          "optimized_ms": 1.792,
+          "speedup": 1.3929687499999999,
+          "baseline_samples_ms": [
+            2.4654,
+            2.5026,
+            2.4962,
+            2.4636,
+            2.3219,
+            2.6812,
+            5.1541
+          ],
+          "optimized_samples_ms": [
+            1.6066,
+            1.7354,
+            3.5123,
+            1.792,
+            1.7898,
+            1.8491,
+            2.0368
+          ],
+          "forward_exact": true
+        },
+        "build_hierarchy": {
+          "baseline_ms": 243.3267,
+          "optimized_ms": 19.5006,
+          "speedup": 12.477908372050091,
+          "baseline_samples_ms": [
+            244.5927,
+            249.1882,
+            255.112,
+            243.3267,
+            216.6491,
+            204.6521,
+            222.2243
+          ],
+          "optimized_samples_ms": [
+            19.5006,
+            18.0761,
+            27.2531,
+            26.4059,
+            21.803,
+            17.2381,
+            17.576
+          ],
+          "forward_exact": true
+        },
+        "upscale_feature": {
+          "baseline_ms": 28.8364,
+          "optimized_ms": 4.0815,
+          "speedup": 7.065147617297562,
+          "baseline_samples_ms": [
+            27.7156,
+            28.8738,
+            28.8364,
+            30.6229,
+            29.965,
+            20.1471,
+            18.1647
+          ],
+          "optimized_samples_ms": [
+            4.1905,
+            3.7856,
+            4.0387,
+            4.6884,
+            4.0815,
+            3.8179,
+            4.9996
+          ],
+          "forward_exact": true
+        },
+        "upscale_coordinate": {
+          "baseline_ms": 18.0881,
+          "optimized_ms": 4.6806,
+          "speedup": 3.8644831859163356,
+          "baseline_samples_ms": [
+            18.6811,
+            17.1317,
+            18.0881,
+            23.2587,
+            20.4517,
+            17.7295,
+            17.3997
+          ],
+          "optimized_samples_ms": [
+            4.6806,
+            4.2473,
+            8.3901,
+            5.3703,
+            4.3397,
+            4.5524,
+            4.9013
+          ],
+          "forward_exact": true
+        },
+        "upscale_coordinate_feature": {
+          "baseline_ms": 34.535,
+          "optimized_ms": 5.7088,
+          "speedup": 6.04943245515695,
+          "baseline_samples_ms": [
+            33.1464,
+            34.535,
+            35.3955,
+            37.0805,
+            39.2373,
+            34.0728,
+            32.4681
+          ],
+          "optimized_samples_ms": [
+            6.09,
+            5.866,
+            5.7211,
+            5.4308,
+            5.1705,
+            5.7088,
+            5.3561
+          ],
+          "forward_exact": true
+        }
+      }
+    },
+    {
+      "file": "data\\FordExample\\sample_0002.ply",
+      "source_sha256": "c5b53fecced243efe5673a0b38f9b2a47d7c456b08717f9641a1dccf4823aa1f",
+      "prequantized": true,
+      "quantized_coords_sha256": "a6251f027561ceed90432261f411d003332622ee15ed3d2fb879ded34c46f50b",
+      "input_points": 80278,
+      "unique_voxels": 77310,
+      "parent_voxels": 75095,
+      "hierarchy_levels": 12,
+      "stages": {
+        "morton3_code": {
+          "baseline_ms": 1.1422,
+          "optimized_ms": 0.9709,
+          "speedup": 1.1764342362756206,
+          "baseline_samples_ms": [
+            1.1422,
+            1.1416,
+            1.1259,
+            3.493,
+            1.3182,
+            1.1608,
+            1.1397
+          ],
+          "optimized_samples_ms": [
+            1.1419,
+            0.9017,
+            0.913,
+            1.2038,
+            0.9709,
+            1.1855,
+            0.9218
+          ],
+          "forward_exact": true
+        },
+        "morton3_sort": {
+          "baseline_ms": 204.907,
+          "optimized_ms": 7.7092,
+          "speedup": 26.57954132724537,
+          "baseline_samples_ms": [
+            196.2022,
+            204.907,
+            198.5654,
+            221.0608,
+            209.4791,
+            208.225,
+            199.0865
+          ],
+          "optimized_samples_ms": [
+            8.5541,
+            8.4501,
+            9.6015,
+            7.6085,
+            7.6238,
+            7.2697,
+            7.7092
+          ],
+          "forward_exact": true
+        },
+        "down_once": {
+          "baseline_ms": 2.5424,
+          "optimized_ms": 1.8692,
+          "speedup": 1.3601540766103146,
+          "baseline_samples_ms": [
+            2.4846,
+            2.5424,
+            3.6368,
+            3.8544,
+            2.3691,
+            3.4297,
+            2.4254
+          ],
+          "optimized_samples_ms": [
+            1.8955,
+            1.8692,
+            2.6658,
+            2.1953,
+            1.7164,
+            1.6248,
+            1.7045
+          ],
+          "forward_exact": true
+        },
+        "build_hierarchy": {
+          "baseline_ms": 223.0855,
+          "optimized_ms": 18.2054,
+          "speedup": 12.253809309325804,
+          "baseline_samples_ms": [
+            223.0855,
+            228.665,
+            227.9359,
+            202.1475,
+            212.7354,
+            231.0823,
+            220.0854
+          ],
+          "optimized_samples_ms": [
+            18.2054,
+            17.6823,
+            24.7801,
+            16.7321,
+            20.8848,
+            19.457,
+            18.1785
+          ],
+          "forward_exact": true
+        },
+        "upscale_feature": {
+          "baseline_ms": 20.3137,
+          "optimized_ms": 4.3751,
+          "speedup": 4.643025302278805,
+          "baseline_samples_ms": [
+            20.9505,
+            20.4663,
+            20.3137,
+            18.5995,
+            21.37,
+            18.729,
+            18.1239
+          ],
+          "optimized_samples_ms": [
+            6.2149,
+            4.4598,
+            6.8514,
+            3.5107,
+            3.8239,
+            3.5548,
+            4.3751
+          ],
+          "forward_exact": true
+        },
+        "upscale_coordinate": {
+          "baseline_ms": 17.2508,
+          "optimized_ms": 5.2394,
+          "speedup": 3.2925144100469526,
+          "baseline_samples_ms": [
+            17.8163,
+            25.8711,
+            17.1748,
+            17.2508,
+            16.4312,
+            17.0763,
+            18.6793
+          ],
+          "optimized_samples_ms": [
+            5.2478,
+            4.4012,
+            4.9493,
+            4.599,
+            5.7428,
+            5.3029,
+            5.2394
+          ],
+          "forward_exact": true
+        },
+        "upscale_coordinate_feature": {
+          "baseline_ms": 36.1126,
+          "optimized_ms": 5.812,
+          "speedup": 6.2134549208534064,
+          "baseline_samples_ms": [
+            34.7447,
+            35.6501,
+            37.7139,
+            36.6098,
+            36.6017,
+            35.9053,
+            36.1126
+          ],
+          "optimized_samples_ms": [
+            5.6006,
+            5.812,
+            5.8089,
+            7.0106,
+            5.416,
+            6.8431,
+            8.6225
+          ],
+          "forward_exact": true
+        }
+      }
+    },
+    {
+      "file": "data\\SemanticKITTIExample\\sample_0001.ply",
+      "source_sha256": "7ffed2554cd7efba5751f9dac610bd767b7b5837c7a551adc320f1d5c7836f64",
+      "prequantized": false,
+      "quantized_coords_sha256": "ac11e040b2db077ceff4d51df30512b27362e0d27fddb9cef86d2a23ae6a24aa",
+      "input_points": 126012,
+      "unique_voxels": 123281,
+      "parent_voxels": 105866,
+      "hierarchy_levels": 12,
+      "stages": {
+        "morton3_code": {
+          "baseline_ms": 2.4172,
+          "optimized_ms": 1.728,
+          "speedup": 1.3988425925925925,
+          "baseline_samples_ms": [
+            3.5648,
+            2.2304,
+            2.2639,
+            4.4051,
+            3.1683,
+            2.3323,
+            2.4172
+          ],
+          "optimized_samples_ms": [
+            2.9836,
+            1.5455,
+            1.8119,
+            1.7641,
+            1.5884,
+            1.5996,
+            1.728
+          ],
+          "forward_exact": true
+        },
+        "morton3_sort": {
+          "baseline_ms": 348.8575,
+          "optimized_ms": 14.1951,
+          "speedup": 24.57590999711168,
+          "baseline_samples_ms": [
+            329.4886,
+            343.1429,
+            355.5157,
+            348.8575,
+            363.6308,
+            338.8478,
+            356.3556
+          ],
+          "optimized_samples_ms": [
+            14.6115,
+            15.6107,
+            14.1951,
+            13.1335,
+            14.1742,
+            12.9406,
+            16.6069
+          ],
+          "forward_exact": true
+        },
+        "down_once": {
+          "baseline_ms": 5.1959,
+          "optimized_ms": 3.0919,
+          "speedup": 1.6804877259937256,
+          "baseline_samples_ms": [
+            7.5401,
+            8.9914,
+            7.1267,
+            5.1959,
+            5.1328,
+            4.5094,
+            3.9506
+          ],
+          "optimized_samples_ms": [
+            2.8016,
+            12.6602,
+            3.0919,
+            3.5321,
+            2.8086,
+            3.49,
+            2.9355
+          ],
+          "forward_exact": true
+        },
+        "build_hierarchy": {
+          "baseline_ms": 370.9272,
+          "optimized_ms": 28.0469,
+          "speedup": 13.225247710085608,
+          "baseline_samples_ms": [
+            388.5464,
+            357.807,
+            368.9655,
+            357.6285,
+            377.9486,
+            387.0914,
+            370.9272
+          ],
+          "optimized_samples_ms": [
+            32.205,
+            28.9271,
+            27.6703,
+            28.0469,
+            26.2898,
+            35.5385,
+            25.2772
+          ],
+          "forward_exact": true
+        },
+        "upscale_feature": {
+          "baseline_ms": 29.4581,
+          "optimized_ms": 6.0815,
+          "speedup": 4.843887198881855,
+          "baseline_samples_ms": [
+            34.9499,
+            27.5292,
+            26.9919,
+            30.0918,
+            29.4581,
+            26.6209,
+            32.6008
+          ],
+          "optimized_samples_ms": [
+            7.9918,
+            5.1336,
+            6.4594,
+            6.0815,
+            6.8933,
+            5.9847,
+            5.6986
+          ],
+          "forward_exact": true
+        },
+        "upscale_coordinate": {
+          "baseline_ms": 27.7848,
+          "optimized_ms": 7.6004,
+          "speedup": 3.6557023314562396,
+          "baseline_samples_ms": [
+            28.1846,
+            27.7848,
+            25.0128,
+            27.3643,
+            24.9908,
+            32.0601,
+            34.4301
+          ],
+          "optimized_samples_ms": [
+            12.2148,
+            7.6004,
+            8.8989,
+            7.3641,
+            7.0476,
+            7.8747,
+            6.4872
+          ],
+          "forward_exact": true
+        },
+        "upscale_coordinate_feature": {
+          "baseline_ms": 60.5973,
+          "optimized_ms": 10.5034,
+          "speedup": 5.7693032732258125,
+          "baseline_samples_ms": [
+            61.3444,
+            57.9788,
+            48.8767,
+            60.5973,
+            61.9672,
+            61.0391,
+            56.1086
+          ],
+          "optimized_samples_ms": [
+            12.9818,
+            9.9283,
+            8.9919,
+            9.633,
+            16.576,
+            12.3255,
+            10.5034
+          ],
+          "forward_exact": true
+        }
+      }
+    },
+    {
+      "file": "data\\SemanticKITTIExample\\sample_0002.ply",
+      "source_sha256": "433278fee4ae10ed7567a24316d38889b7dab112217adcfa0b791c61e9661393",
+      "prequantized": false,
+      "quantized_coords_sha256": "eec9140c5602c3d339908fefffec7cc9bae6b757b3d67abd5a84e80960e30d34",
+      "input_points": 125756,
+      "unique_voxels": 122832,
+      "parent_voxels": 105216,
+      "hierarchy_levels": 12,
+      "stages": {
+        "morton3_code": {
+          "baseline_ms": 2.4144,
+          "optimized_ms": 1.9113,
+          "speedup": 1.2632239836760322,
+          "baseline_samples_ms": [
+            2.2229,
+            2.461,
+            2.2618,
+            2.4144,
+            2.4538,
+            2.3958,
+            3.5109
+          ],
+          "optimized_samples_ms": [
+            1.5335,
+            1.9113,
+            2.6765,
+            2.7777,
+            1.7536,
+            1.7964,
+            2.5281
+          ],
+          "forward_exact": true
+        },
+        "morton3_sort": {
+          "baseline_ms": 343.1399,
+          "optimized_ms": 13.4941,
+          "speedup": 25.428883734372803,
+          "baseline_samples_ms": [
+            356.9256,
+            343.1399,
+            342.2113,
+            345.8346,
+            352.7753,
+            333.977,
+            343.117
+          ],
+          "optimized_samples_ms": [
+            13.4123,
+            11.4424,
+            13.7214,
+            14.6589,
+            18.2044,
+            13.4941,
+            11.8568
+          ],
+          "forward_exact": true
+        },
+        "down_once": {
+          "baseline_ms": 4.5087,
+          "optimized_ms": 2.9659,
+          "speedup": 1.5201793721973096,
+          "baseline_samples_ms": [
+            3.8583,
+            4.199,
+            4.1708,
+            4.5087,
+            4.8238,
+            6.2687,
+            7.6515
+          ],
+          "optimized_samples_ms": [
+            2.8693,
+            3.2929,
+            2.9659,
+            3.5635,
+            2.8668,
+            3.3399,
+            2.889
+          ],
+          "forward_exact": true
+        },
+        "build_hierarchy": {
+          "baseline_ms": 344.7493,
+          "optimized_ms": 22.6229,
+          "speedup": 15.23895256576301,
+          "baseline_samples_ms": [
+            346.1696,
+            344.7493,
+            331.7596,
+            369.5525,
+            337.7158,
+            337.8842,
+            367.7771
+          ],
+          "optimized_samples_ms": [
+            22.368,
+            24.4703,
+            24.004,
+            22.3265,
+            22.6229,
+            21.7166,
+            23.5948
+          ],
+          "forward_exact": true
+        },
+        "upscale_feature": {
+          "baseline_ms": 28.205,
+          "optimized_ms": 6.1169,
+          "speedup": 4.610995765829096,
+          "baseline_samples_ms": [
+            29.666,
+            32.2554,
+            29.1478,
+            25.5908,
+            26.9251,
+            28.205,
+            28.1862
+          ],
+          "optimized_samples_ms": [
+            6.1169,
+            6.0073,
+            5.7182,
+            5.6713,
+            6.6252,
+            7.3507,
+            7.8562
+          ],
+          "forward_exact": true
+        },
+        "upscale_coordinate": {
+          "baseline_ms": 26.8551,
+          "optimized_ms": 7.4079,
+          "speedup": 3.6251974243712795,
+          "baseline_samples_ms": [
+            32.0769,
+            23.2039,
+            22.3644,
+            26.8551,
+            29.8448,
+            27.4902,
+            23.4986
+          ],
+          "optimized_samples_ms": [
+            7.1302,
+            7.4079,
+            7.497,
+            6.4805,
+            7.5428,
+            7.8025,
+            7.2313
+          ],
+          "forward_exact": true
+        },
+        "upscale_coordinate_feature": {
+          "baseline_ms": 58.046,
+          "optimized_ms": 11.9618,
+          "speedup": 4.852614155060275,
+          "baseline_samples_ms": [
+            69.9002,
+            60.2573,
+            63.5758,
+            53.0762,
+            56.4177,
+            55.3566,
+            58.046
+          ],
+          "optimized_samples_ms": [
+            20.4389,
+            14.5826,
+            10.5419,
+            8.11,
+            9.9112,
+            13.9286,
+            11.9618
+          ],
+          "forward_exact": true
+        }
+      }
+    }
+  ]
+}

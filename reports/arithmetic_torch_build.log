@@ -1,0 +1,7 @@
+running build_ext
+building 'elic_ac_binding_check' extension
+creating build\temp.win-amd64-cpython-313\Release\Embedded-System\ELiCv1\csrc
+"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\cl.exe" /c /nologo /O2 /W3 /GL /DNDEBUG /MD -IC:\Users\LinkZelda\miniconda3\Lib\site-packages\torch\include -IC:\Users\LinkZelda\miniconda3\Lib\site-packages\torch\include\torch\csrc\api\include -IC:\Users\LinkZelda\miniconda3\include -IC:\Users\LinkZelda\miniconda3\Include "-IC:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include" "-IC:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include" /EHsc /TpD:\Embedded-System\ELiCv1\csrc\arithmetic_coding.cpp /Fobuild\temp.win-amd64-cpython-313\Release\Embedded-System\ELiCv1\csrc\arithmetic_coding.obj /MD /wd4819 /wd4251 /wd4244 /wd4267 /wd4275 /wd4018 /wd4190 /wd4624 /wd4067 /wd4068 /EHsc /O2 /std:c++17 -DTORCH_API_INCLUDE_EXTENSION_H -DTORCH_EXTENSION_NAME=elic_ac_binding_check
+arithmetic_coding.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\cassert(9): fatal error C1083: Cannot open include file: 'assert.h': No such file or directory
+error: command 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\cl.exe' failed with exit code 2

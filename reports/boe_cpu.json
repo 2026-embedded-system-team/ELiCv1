@@ -1,0 +1,292 @@
+{
+  "scope": "offline BoE center-training histogram preprocessing; not inference selection or KMeans/TSNE",
+  "device": "cpu",
+  "threads": 1,
+  "warmup": 2,
+  "repeats": 7,
+  "torch_version": "2.12.0+cpu",
+  "python_version": "3.13.12",
+  "platform": "Windows-11-10.0.26100-SP0",
+  "posq": 4,
+  "quantization": "PCDataset float32; no augmentation; Ford prequantized; KITTI /0.001; unconditional +131072; round /posq",
+  "baseline": "AST-extracted unchanged blocks from benchmarks/reference/BoE_cluster.py",
+  "timer": "perf_counter_ns; alternating pair order; median; CUDA synchronize when applicable",
+  "samples": [
+    {
+      "file": "data\\FordExample\\sample_0001.ply",
+      "prequantized": true,
+      "source_sha256": "eeeaf871813f0e4c7dbaba567f79eb71b7add11a0df6a8cd506480baf14e7258",
+      "quantized_coords_sha256": "e17714b971299cb68e9ed4c089f1f46f2486e9a068ad960ca50ab353c2f42257",
+      "input_points": 80332,
+      "levels": 9,
+      "labels": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "histogram_exact": true,
+      "bitdepth_exact": true,
+      "stages": {
+        "boe_offline_sort_histograms": {
+          "baseline_ms": 68.7839,
+          "optimized_ms": 1.2011,
+          "speedup": 57.267421530263924,
+          "baseline_samples_ms": [
+            67.0302,
+            68.0864,
+            68.3343,
+            68.7839,
+            70.8764,
+            71.4412,
+            69.1686
+          ],
+          "optimized_samples_ms": [
+            1.1068,
+            1.3235,
+            1.2011,
+            0.9986,
+            1.34,
+            1.1335,
+            1.4176
+          ]
+        },
+        "boe_offline_collect": {
+          "baseline_ms": 275.0657,
+          "optimized_ms": 22.5817,
+          "speedup": 12.180911977397626,
+          "baseline_samples_ms": [
+            279.7272,
+            275.0657,
+            276.8319,
+            274.9648,
+            276.1741,
+            269.3004,
+            272.5024
+          ],
+          "optimized_samples_ms": [
+            24.8634,
+            23.4743,
+            23.5806,
+            20.4835,
+            22.0501,
+            22.5817,
+            20.4798
+          ]
+        }
+      }
+    },
+    {
+      "file": "data\\FordExample\\sample_0002.ply",
+      "prequantized": true,
+      "source_sha256": "c5b53fecced243efe5673a0b38f9b2a47d7c456b08717f9641a1dccf4823aa1f",
+      "quantized_coords_sha256": "9cb57ec89ff8aa59a0e3f3f5566252721b62c2a99022809326e38e194d57e52b",
+      "input_points": 80278,
+      "levels": 9,
+      "labels": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "histogram_exact": true,
+      "bitdepth_exact": true,
+      "stages": {
+        "boe_offline_sort_histograms": {
+          "baseline_ms": 71.014,
+          "optimized_ms": 1.1491,
+          "speedup": 61.79966930641371,
+          "baseline_samples_ms": [
+            71.1433,
+            71.014,
+            70.6971,
+            70.5622,
+            70.3106,
+            72.9164,
+            71.5934
+          ],
+          "optimized_samples_ms": [
+            1.1491,
+            1.2358,
+            1.1089,
+            1.0468,
+            1.1606,
+            1.055,
+            1.2074
+          ]
+        },
+        "boe_offline_collect": {
+          "baseline_ms": 278.9513,
+          "optimized_ms": 21.1375,
+          "speedup": 13.196986398580721,
+          "baseline_samples_ms": [
+            274.3463,
+            278.9513,
+            268.6262,
+            273.8524,
+            285.0089,
+            290.3147,
+            298.0879
+          ],
+          "optimized_samples_ms": [
+            20.4423,
+            20.2934,
+            20.3338,
+            23.1872,
+            22.1727,
+            21.1375,
+            26.7206
+          ]
+        }
+      }
+    },
+    {
+      "file": "data\\SemanticKITTIExample\\sample_0001.ply",
+      "prequantized": false,
+      "source_sha256": "7ffed2554cd7efba5751f9dac610bd767b7b5837c7a551adc320f1d5c7836f64",
+      "quantized_coords_sha256": "f00faaa3022154500ce62058fd5f25546e66fb3a06ff1494bcab25c556ea9421",
+      "input_points": 126012,
+      "levels": 9,
+      "labels": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "histogram_exact": true,
+      "bitdepth_exact": true,
+      "stages": {
+        "boe_offline_sort_histograms": {
+          "baseline_ms": 93.999,
+          "optimized_ms": 1.7991,
+          "speedup": 52.24779056194764,
+          "baseline_samples_ms": [
+            94.6315,
+            94.258,
+            96.6537,
+            92.7852,
+            93.999,
+            93.695,
+            90.9524
+          ],
+          "optimized_samples_ms": [
+            2.0615,
+            1.9147,
+            2.0739,
+            1.4533,
+            1.7991,
+            1.7162,
+            1.5747
+          ]
+        },
+        "boe_offline_collect": {
+          "baseline_ms": 429.7621,
+          "optimized_ms": 28.967,
+          "speedup": 14.836265405461386,
+          "baseline_samples_ms": [
+            461.6231,
+            425.6273,
+            429.7621,
+            429.1054,
+            424.0063,
+            445.028,
+            463.5049
+          ],
+          "optimized_samples_ms": [
+            28.967,
+            28.7758,
+            27.7066,
+            32.3576,
+            29.0873,
+            27.7936,
+            31.9926
+          ]
+        }
+      }
+    },
+    {
+      "file": "data\\SemanticKITTIExample\\sample_0002.ply",
+      "prequantized": false,
+      "source_sha256": "433278fee4ae10ed7567a24316d38889b7dab112217adcfa0b791c61e9661393",
+      "quantized_coords_sha256": "f791e6ff749135fbc2bfa502ac2a8aeee935fe4c5ffbada0d451e07f6664ea6d",
+      "input_points": 125756,
+      "levels": 9,
+      "labels": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "histogram_exact": true,
+      "bitdepth_exact": true,
+      "stages": {
+        "boe_offline_sort_histograms": {
+          "baseline_ms": 102.2419,
+          "optimized_ms": 1.6649,
+          "speedup": 61.41023484893987,
+          "baseline_samples_ms": [
+            126.0438,
+            102.2419,
+            97.751,
+            91.3224,
+            110.7902,
+            101.4858,
+            114.8572
+          ],
+          "optimized_samples_ms": [
+            1.7746,
+            1.3102,
+            1.3472,
+            1.6649,
+            2.9803,
+            2.0738,
+            1.575
+          ]
+        },
+        "boe_offline_collect": {
+          "baseline_ms": 456.5659,
+          "optimized_ms": 33.0851,
+          "speedup": 13.79974369126888,
+          "baseline_samples_ms": [
+            447.8429,
+            462.2278,
+            460.5627,
+            450.5325,
+            446.6083,
+            462.0483,
+            456.5659
+          ],
+          "optimized_samples_ms": [
+            29.7638,
+            34.1163,
+            33.7955,
+            32.4761,
+            32.758,
+            33.0851,
+            35.82
+          ]
+        }
+      }
+    }
+  ]
+}

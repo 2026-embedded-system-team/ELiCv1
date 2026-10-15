@@ -2,6 +2,7 @@ import os
 import random
 import torch
 import numpy as np
+from functools import lru_cache
 
 # The functions below are borrowed from RENO
 # https://github.com/NJUVISION/RENO
@@ -12,8 +13,8 @@ def set_seed(seed=11):
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
-    
-    
+
+
 #########################################################################################################################################
 def sort_C(C):
     _, indices = torch.sort(C[:, 1])
@@ -28,7 +29,7 @@ def sort_C(C):
 
 
 #########################################################################################################################################
-def sort_CF(C, F): 
+def sort_CF(C, F):
     _, indices = torch.sort(C[:, 1])
     C = C[indices]
     F = F[indices]
@@ -69,7 +70,7 @@ def unpack_byte_stream(stream):
 #########################################################################################################################################
 @torch.no_grad()
 def _convert_to_int_and_normalize(cdf_float, needs_normalization):
-  """Convert floatingpoint CDF to integers. See README for more info.
+  r"""Convert floatingpoint CDF to integers. See README for more info.
 
   The idea is the following:
   When we get the cdf here, it is (assumed to be) between 0 and 1, i.e,
@@ -86,25 +87,25 @@ def _convert_to_int_and_normalize(cdf_float, needs_normalization):
   monotonically increasing CDFs, which are \in [0, 2**16)
   """
   Lp = cdf_float.shape[-1]
-  factor = torch.tensor(2, dtype=torch.float32, device=cdf_float.device).pow_(16)
-  new_max_value = factor
+  # Both constants are exactly representable in float32. A scalar avoids
+  # allocating a device tensor and launching pow/subtract for every stage.
+  new_max_value = 65536 - (Lp - 1) if needs_normalization else 65536
+  cdf = cdf_float.mul(new_max_value).round().to(dtype=torch.int16)
   if needs_normalization:
-    new_max_value = new_max_value - (Lp - 1)
-  cdf_float = cdf_float.mul(new_max_value)
-  cdf_float = cdf_float.round()
-
-  cdf = cdf_float.to(dtype=torch.int16, non_blocking=True)
-  if needs_normalization:
-    r = torch.arange(Lp, dtype=torch.int16, device=cdf.device)
-    cdf.add_(r)
+    cdf.add_(_cdf_ramp(Lp, cdf.device))
   return cdf
+
+
+@lru_cache(maxsize=32)
+def _cdf_ramp(length, device):
+    return torch.arange(length, dtype=torch.int16, device=device)
 
 
 #########################################################################################################################################
 def get_file_size_in_bits(file_path):
     return os.stat(file_path).st_size * 8
-  
-  
+
+
 #########################################################################################################################################
 # The indices of the base coding network should be modified later so that it is no longer signaled.
 def pack_byte_stream_and_enc_idx_list(byte_stream_list, enc_idx_list):
@@ -129,8 +130,8 @@ def unpack_byte_stream_and_enc_idx_list(stream):
     len_enc_idx_list = len_bytes_stream_list // 2
     enc_idx_list = np.frombuffer(stream[cursor:cursor+len_enc_idx_list], dtype=np.uint8).tolist()
     return byte_stream_list, enc_idx_list
-    
-    
+
+
 #########################################################################################################################################
 def pack_bitstream_and_enc_idx_list(bitstream, enc_idx_list):
     stream = np.array(len(bitstream), dtype=np.uint32).tobytes()
@@ -142,11 +143,11 @@ def pack_bitstream_and_enc_idx_list(bitstream, enc_idx_list):
 #########################################################################################################################################
 def unpack_bitstream_and_enc_idx_list(stream):
     bitstream_len = np.frombuffer(stream[:4], dtype=np.uint32)[0]
-    
+
     bitstream_start = 4
     bitstream_end = bitstream_start + bitstream_len
     bitstream = stream[bitstream_start:bitstream_end]
-    
+
     enc_idx_bytes = stream[bitstream_end:]
     enc_idx_list = np.frombuffer(enc_idx_bytes, dtype=np.uint8)
 

@@ -1,0 +1,15 @@
+{
+  "commit": "8f3ea78a73d4a3b1ac8d58912fcca10523e4d4db",
+  "files": {
+    "compress.py": "2b564a010e52f873ce0a58ea3d9542642cd8f24a8ce7dbad92f95b004242c7c4",
+    "csrc/arithmetic_coding.cpp": "826fc4620055a63ef170c4e27c44a1e1821ae9c36da3940a28b8b10499dba5ae",
+    "decompress.py": "38c13399b063923d20021e0815bba552aa8944f178ee60c07bf3cd0f460602ca",
+    "model.py": "976530d6f5e2add12f63fa37008bc86d989955ec42582ec512152b241df150f1",
+    "src/dataset.py": "470d79bff9da38b36a3fc05a75f4b52db339bad57b43410782f148be5802150a",
+    "src/io.py": "c8eb891eee25317b90cf8171e016aadeffb7596b33f05f383f6719a566dcc0c1",
+    "src/morton.py": "834cc3f5f560021e33c3446954038906e69c20256852cd72e7b7a6e09b7999d7",
+    "src/nn.py": "d925145bcdd12b0501811b34d05bb0fd05052e3547b22e6dd6ad06aeb196b193",
+    "src/op.py": "0968857303f4cf26816cae9896d69fddf58ceb8b552694cc293a11551ce093f3",
+    "BoE_cluster.py": "288cc2e975abdb0a02498f18caf0f1ec2507d96d8d0719a06a7cbd0387dbe7d1"
+  }
+}

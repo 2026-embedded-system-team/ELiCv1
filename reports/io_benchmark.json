@@ -1,0 +1,335 @@
+{
+  "environment": {
+    "python": "3.13.12 | packaged by Anaconda, Inc. | (main, Feb 24 2026, 16:05:56) [MSC v.1942 64 bit (AMD64)]",
+    "numpy": "2.4.2",
+    "platform": "Windows-11-10.0.26100-SP0",
+    "cpu_count": 22
+  },
+  "repeats": 7,
+  "warmups": 2,
+  "sample_points": {
+    "data\\FordExample\\sample_0001.ply": 80332,
+    "data\\FordExample\\sample_0002.ply": 80278,
+    "data\\SemanticKITTIExample\\sample_0001.ply": 126012,
+    "data\\SemanticKITTIExample\\sample_0002.ply": 125756
+  },
+  "notes": [
+    "Wall-clock timings include file open, parsing/formatting and close; files are OS-cached, without fsync.",
+    "Baseline functions are compiled unchanged from the frozen AST; unused open3d conversion is stubbed out.",
+    "Baseline batch reader uses sequential read_points: original Pool(64) is not a valid Windows script baseline without a main guard.",
+    "New output uses nine significant digits to preserve float32 values; ASCII text and file sizes may differ from baseline.",
+    "The output is an I/O module benchmark, not complete neural codec or GPU performance."
+  ],
+  "results": [
+    {
+      "module": "PLY read",
+      "sample": "data\\FordExample\\sample_0001.ply",
+      "baseline_ms": 157.8986,
+      "optimized_ms": 38.8092,
+      "speedup": 4.068586829926924,
+      "baseline_p10_ms": 153.3826,
+      "baseline_p90_ms": 168.76346,
+      "optimized_p10_ms": 36.26208,
+      "optimized_p90_ms": 44.398920000000004,
+      "raw_ms": {
+        "baseline": [
+          150.0655,
+          155.594,
+          157.8986,
+          160.8024,
+          161.6759,
+          156.9454,
+          179.3948
+        ],
+        "optimized": [
+          37.2902,
+          36.1368,
+          44.176,
+          38.8092,
+          43.1994,
+          44.7333,
+          36.3456
+        ]
+      }
+    },
+    {
+      "module": "PLY write",
+      "sample": "data\\FordExample\\sample_0001.ply",
+      "baseline_ms": 198.4799,
+      "optimized_ms": 131.8874,
+      "speedup": 1.5049193478679537,
+      "baseline_p10_ms": 190.29352,
+      "baseline_p90_ms": 257.06694000000005,
+      "optimized_p10_ms": 124.50466,
+      "optimized_p90_ms": 135.03776,
+      "raw_ms": {
+        "baseline": [
+          195.7926,
+          198.4799,
+          202.6916,
+          184.0957,
+          206.5829,
+          332.793,
+          194.4254
+        ],
+        "optimized": [
+          122.9194,
+          131.8874,
+          125.5615,
+          132.683,
+          131.947,
+          138.5699,
+          129.2272
+        ]
+      }
+    },
+    {
+      "module": "PLY read",
+      "sample": "data\\FordExample\\sample_0002.ply",
+      "baseline_ms": 175.5721,
+      "optimized_ms": 47.2337,
+      "speedup": 3.7170939392848754,
+      "baseline_p10_ms": 166.82616,
+      "baseline_p90_ms": 181.19272,
+      "optimized_p10_ms": 41.5345,
+      "optimized_p90_ms": 53.416760000000004,
+      "raw_ms": {
+        "baseline": [
+          181.4287,
+          175.5721,
+          173.9112,
+          181.0354,
+          158.4708,
+          172.3964,
+          176.0188
+        ],
+        "optimized": [
+          45.2384,
+          47.2337,
+          40.0147,
+          42.5477,
+          49.7199,
+          55.9034,
+          51.759
+        ]
+      }
+    },
+    {
+      "module": "PLY write",
+      "sample": "data\\FordExample\\sample_0002.ply",
+      "baseline_ms": 200.8578,
+      "optimized_ms": 132.5201,
+      "speedup": 1.5156779990356177,
+      "baseline_p10_ms": 182.52919999999997,
+      "baseline_p90_ms": 248.40680000000003,
+      "optimized_p10_ms": 120.72116,
+      "optimized_p90_ms": 151.33426,
+      "raw_ms": {
+        "baseline": [
+          177.2453,
+          221.5872,
+          186.0518,
+          284.297,
+          189.6467,
+          224.48,
+          200.8578
+        ],
+        "optimized": [
+          125.8734,
+          133.2416,
+          148.3609,
+          155.7943,
+          123.3488,
+          116.7797,
+          132.5201
+        ]
+      }
+    },
+    {
+      "module": "PLY read",
+      "sample": "data\\SemanticKITTIExample\\sample_0001.ply",
+      "baseline_ms": 334.9477,
+      "optimized_ms": 67.9074,
+      "speedup": 4.932418263694384,
+      "baseline_p10_ms": 323.22308,
+      "baseline_p90_ms": 351.17098,
+      "optimized_p10_ms": 64.51480000000001,
+      "optimized_p90_ms": 74.64464000000001,
+      "raw_ms": {
+        "baseline": [
+          339.4286,
+          315.9908,
+          368.227,
+          334.7155,
+          328.0446,
+          339.8003,
+          334.9477
+        ],
+        "optimized": [
+          66.7956,
+          67.9074,
+          65.3662,
+          70.9062,
+          72.6838,
+          63.2377,
+          77.5859
+        ]
+      }
+    },
+    {
+      "module": "PLY write",
+      "sample": "data\\SemanticKITTIExample\\sample_0001.ply",
+      "baseline_ms": 310.6554,
+      "optimized_ms": 206.0988,
+      "speedup": 1.5073129974555892,
+      "baseline_p10_ms": 297.95952,
+      "baseline_p90_ms": 341.99036,
+      "optimized_p10_ms": 193.95368,
+      "optimized_p90_ms": 233.87532000000002,
+      "raw_ms": {
+        "baseline": [
+          299.8873,
+          318.3893,
+          310.6554,
+          295.5726,
+          324.1366,
+          299.5508,
+          368.771
+        ],
+        "optimized": [
+          206.0988,
+          207.9511,
+          218.9654,
+          202.5769,
+          190.6286,
+          196.1704,
+          256.2402
+        ]
+      }
+    },
+    {
+      "module": "PLY read",
+      "sample": "data\\SemanticKITTIExample\\sample_0002.ply",
+      "baseline_ms": 368.3512,
+      "optimized_ms": 77.6577,
+      "speedup": 4.743266926524994,
+      "baseline_p10_ms": 342.47337999999996,
+      "baseline_p90_ms": 373.36354,
+      "optimized_p10_ms": 74.34836,
+      "optimized_p90_ms": 81.1352,
+      "raw_ms": {
+        "baseline": [
+          324.4975,
+          370.9951,
+          354.4573,
+          373.8499,
+          368.3512,
+          373.0393,
+          362.2023
+        ],
+        "optimized": [
+          82.139,
+          78.1576,
+          71.9888,
+          75.9214,
+          77.6577,
+          77.0375,
+          80.466
+        ]
+      }
+    },
+    {
+      "module": "PLY write",
+      "sample": "data\\SemanticKITTIExample\\sample_0002.ply",
+      "baseline_ms": 346.6742,
+      "optimized_ms": 232.3123,
+      "speedup": 1.4922765604748436,
+      "baseline_p10_ms": 320.05912,
+      "baseline_p90_ms": 350.54156,
+      "optimized_p10_ms": 214.66062,
+      "optimized_p90_ms": 248.44232,
+      "raw_ms": {
+        "baseline": [
+          350.465,
+          346.6742,
+          332.0512,
+          319.3606,
+          350.6564,
+          320.5248,
+          348.9924
+        ],
+        "optimized": [
+          245.532,
+          232.3123,
+          222.6828,
+          252.8078,
+          213.8193,
+          215.2215,
+          237.5029
+        ]
+      }
+    },
+    {
+      "module": "Batch read sequential",
+      "sample": "all four real samples",
+      "baseline_ms": 1082.8711,
+      "optimized_ms": 238.0885,
+      "speedup": 4.548187333701544,
+      "baseline_p10_ms": 1070.64588,
+      "baseline_p90_ms": 1111.60164,
+      "optimized_p10_ms": 227.86138,
+      "optimized_p90_ms": 258.31362,
+      "raw_ms": {
+        "baseline": [
+          1082.4282,
+          1064.1705,
+          1110.6074,
+          1082.8711,
+          1096.9577,
+          1113.093,
+          1074.9628
+        ],
+        "optimized": [
+          238.9038,
+          221.7073,
+          278.355,
+          234.3602,
+          231.9641,
+          244.9527,
+          238.0885
+        ]
+      }
+    },
+    {
+      "module": "Batch read auto",
+      "sample": "all four real samples",
+      "baseline_ms": 1036.6882,
+      "optimized_ms": 230.5008,
+      "speedup": 4.497547080096902,
+      "baseline_p10_ms": 1014.98718,
+      "baseline_p90_ms": 1057.74534,
+      "optimized_p10_ms": 222.39104,
+      "optimized_p90_ms": 235.39776,
+      "raw_ms": {
+        "baseline": [
+          1036.6882,
+          1030.9336,
+          1041.6637,
+          1007.0043,
+          1052.7203,
+          1065.2829,
+          1020.3091
+        ],
+        "optimized": [
+          230.5008,
+          222.0755,
+          237.5001,
+          231.2426,
+          233.9962,
+          222.6014,
+          224.1665
+        ]
+      }
+    }
+  ]
+}

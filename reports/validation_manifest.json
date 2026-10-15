@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-15",
+  "timezone": "Asia/Hong_Kong",
+  "baseline_commit": "8f3ea78a73d4a3b1ac8d58912fcca10523e4d4db",
+  "code_sha256": {
+    "BoE_cluster.py": "98053806d2502d157bebbefbcc4a0be54797805a490c0502df52f3a66234c256",
+    "compress.py": "53b2230ad504702ded82857d4f0c19ab54a199774e2c175e957518c2d82b46f6",
+    "decompress.py": "c08fbd98f24c0aa699a6e80243b6b550221a7b769230867a2d48c6a97f18cd13",
+    "model.py": "cad63746224ecc2503340e64538c8b6468679a0a809ee94b08ffd0e054afb818",
+    "src/boe.py": "0f3f00e6deda5a4a3f71deabdf20e53e0e738d111d411a4045b3a8af585cdb1d",
+    "src/morton.py": "dfe60e357384ea0362ade95aded39d73dbdbb35fc17dfca8f7be8ed5d71f8a9c",
+    "src/io.py": "26c7c63daf6e6bf7c98143083c720668789c23dea4667e920a0c0efd2e4d9a18",
+    "src/op.py": "7bcd2ca1746da3f39fbb8296fec857478d61b400fbb052bf6e2b233eb91b8dc6",
+    "src/runtime.py": "7af8576592918c2e74349b7ffc201d56bc6bcc3483eee107023571a6b5860cf2",
+    "src/nn.py": "d925145bcdd12b0501811b34d05bb0fd05052e3547b22e6dd6ad06aeb196b193",
+    "csrc/arithmetic_core.h": "a577a37d34fa9f3071b024d995825cd1afae6973437f1541b817257a250919bc",
+    "csrc/arithmetic_coding.cpp": "58eab92e34f69df6ae4af95fadad3319074de85254067bec1adf2470934207e5"
+  },
+  "weights_sha256": {
+    "model/Ford/ELiCv1_K5.pt": "75c2a85665da8434982c583062d7a783f2e45e6fff3e58f95e2438bc469d2994",
+    "model/SemanticKITTI/ELiCv1_K5.pt": "767a2061aab56cd5f0692a420d32614bb4e08947ceaef03ea6b2bb461d4d866f"
+  },
+  "inputs_sha256": {
+    "data/FordExample/sample_0001.ply": "eeeaf871813f0e4c7dbaba567f79eb71b7add11a0df6a8cd506480baf14e7258",
+    "data/FordExample/sample_0002.ply": "c5b53fecced243efe5673a0b38f9b2a47d7c456b08717f9641a1dccf4823aa1f",
+    "data/SemanticKITTIExample/sample_0001.ply": "7ffed2554cd7efba5751f9dac610bd767b7b5837c7a551adc320f1d5c7836f64",
+    "data/SemanticKITTIExample/sample_0002.ply": "433278fee4ae10ed7567a24316d38889b7dab112217adcfa0b791c61e9661393"
+  },
+  "baseline_manifest_sha256": "895b9d768cf06a51fe3b63b6b4e7a7d59c3497f6ed84e2448416b5a3bf799dc5",
+  "pytest": {
+    "passed": 87,
+    "subtests_passed": 49,
+    "skipped_cuda": 3,
+    "failed": 0
+  },
+  "full_neural_pipeline_status": "unavailable",
+  "production_torch_binding_status": "unavailable"
+}
