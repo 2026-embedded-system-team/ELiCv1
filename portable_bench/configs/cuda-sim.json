@@ -1,0 +1,8 @@
+{
+  "device": "cuda-sim",
+  "suites": ["modules", "io", "arithmetic", "geometry"],
+  "synthetic": true,
+  "points": 4096,
+  "posq": [16],
+  "correctness_only": true
+}

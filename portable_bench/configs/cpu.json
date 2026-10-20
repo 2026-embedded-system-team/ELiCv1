@@ -1,0 +1,12 @@
+{
+  "device": "cpu",
+  "suites": ["modules", "io", "arithmetic", "geometry"],
+  "synthetic": true,
+  "points": 4096,
+  "channels": 32,
+  "posq": [16],
+  "warmups": 2,
+  "repeats": 7,
+  "seed": 11,
+  "threads": 1
+}

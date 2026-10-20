@@ -1,0 +1,12 @@
+{
+  "correctness": "passed",
+  "reader_checks": 5959833,
+  "decoder_cases": 24,
+  "timing": "alternating paired median; 3 warmups; 15 repeats",
+  "rows": [],
+  "compiler": "C:\\Users\\LinkZelda\\msys64\\mingw64\\bin\\g++.EXE",
+  "baseline": "D:\\Embedded-System\\ELiCv1\\benchmarks\\results\\memory_io_20261020\\before\\csrc\\arithmetic_core.h",
+  "baseline_sha256": "a577a37d34fa9f3071b024d995825cd1afae6973437f1541b817257a250919bc",
+  "optimized_sha256": "5e13703a8acb77e53be43f9596986cd0e218c73de52fb3720928a449673bf00f",
+  "scope": "CPU integer decoder only; same CDFs, outputs and reset copies; no neural/GPU timing"
+}

@@ -1,0 +1,556 @@
+{
+  "schema_version": "1.0",
+  "baseline": "current optimized implementation; not frozen original",
+  "native_build": {
+    "compiler_command": [
+      "C:\\Users\\LinkZelda\\msys64\\mingw64\\bin\\g++.exe",
+      "-O3",
+      "-std=c++17",
+      "-shared",
+      "D:\\Embedded-System\\ELiCv1\\research_optimizations\\fused_geometry\\fused_geometry.cpp",
+      "-o",
+      "D:\\Embedded-System\\ELiCv1\\research_optimizations\\fused_geometry\\check\\build\\fused-geometry-4mb9v0a5\\fused.dll"
+    ],
+    "prototype_sha256": "ecf7d4fc63d220ca5db70c05023288de9d3efc826fb8e18915ea376bbb2496d4",
+    "current_morton_sha256": "dfe60e357384ea0362ade95aded39d73dbdbb35fc17dfca8f7be8ed5d71f8a9c",
+    "isa": "portable C++17; no -march=native, BMI2, CUDA or fast-math flags"
+  },
+  "config": {
+    "device": "cpu",
+    "suites": [
+      "modules",
+      "io",
+      "arithmetic",
+      "geometry"
+    ],
+    "points": 4096,
+    "channels": 32,
+    "posq": [
+      16
+    ],
+    "warmups": 3,
+    "repeats": 15,
+    "seed": 11,
+    "threads": 1,
+    "timeout": 600,
+    "compiler": null,
+    "files": [
+      {
+        "path": "D:\\Embedded-System\\ELiCv1\\data\\FordExample\\sample_0001.ply",
+        "prequantized": true,
+        "scale": 0.001,
+        "offset": 131072
+      },
+      {
+        "path": "D:\\Embedded-System\\ELiCv1\\data\\FordExample\\sample_0002.ply",
+        "prequantized": true,
+        "scale": 0.001,
+        "offset": 131072
+      },
+      {
+        "path": "D:\\Embedded-System\\ELiCv1\\data\\SemanticKITTIExample\\sample_0001.ply",
+        "prequantized": false,
+        "scale": 0.001,
+        "offset": 131072
+      },
+      {
+        "path": "D:\\Embedded-System\\ELiCv1\\data\\SemanticKITTIExample\\sample_0002.ply",
+        "prequantized": false,
+        "scale": 0.001,
+        "offset": 131072
+      }
+    ],
+    "prequantized": "auto",
+    "synthetic": false,
+    "correctness_only": true,
+    "async_entropy": false,
+    "repo_root": "D:\\Embedded-System\\ELiCv1",
+    "output_dir": "D:\\Embedded-System\\ELiCv1\\research_optimizations\\fused_geometry\\check"
+  },
+  "edge_checks": 44,
+  "cases": [
+    {
+      "case_id": "000.sample_0001.ply.q16.morton3_code",
+      "suite": "morton3_code",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\FordExample\\sample_0001.ply",
+        "source_sha256": "eeeaf871813f0e4c7dbaba567f79eb71b7add11a0df6a8cd506480baf14e7258",
+        "posq": 16,
+        "input_points": 80332,
+        "prequantized": true,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "176779094e7eaa4a293702b132de8e9081ab32058cf33e64adf8ccd2cf5fb259",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.005126700000346318
+    },
+    {
+      "case_id": "000.sample_0001.ply.q16.morton3_sort",
+      "suite": "morton3_sort",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\FordExample\\sample_0001.ply",
+        "source_sha256": "eeeaf871813f0e4c7dbaba567f79eb71b7add11a0df6a8cd506480baf14e7258",
+        "posq": 16,
+        "input_points": 80332,
+        "prequantized": true,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "176779094e7eaa4a293702b132de8e9081ab32058cf33e64adf8ccd2cf5fb259",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.042613600000095175
+    },
+    {
+      "case_id": "000.sample_0001.ply.q16.down_once",
+      "suite": "down_once",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\FordExample\\sample_0001.ply",
+        "source_sha256": "eeeaf871813f0e4c7dbaba567f79eb71b7add11a0df6a8cd506480baf14e7258",
+        "posq": 16,
+        "input_points": 80332,
+        "prequantized": true,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "176779094e7eaa4a293702b132de8e9081ab32058cf33e64adf8ccd2cf5fb259",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.005576000000019121
+    },
+    {
+      "case_id": "000.sample_0001.ply.q16.build_hierarchy",
+      "suite": "build_hierarchy",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\FordExample\\sample_0001.ply",
+        "source_sha256": "eeeaf871813f0e4c7dbaba567f79eb71b7add11a0df6a8cd506480baf14e7258",
+        "posq": 16,
+        "input_points": 80332,
+        "prequantized": true,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "176779094e7eaa4a293702b132de8e9081ab32058cf33e64adf8ccd2cf5fb259",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.05666520000022501
+    },
+    {
+      "case_id": "001.sample_0002.ply.q16.morton3_code",
+      "suite": "morton3_code",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\FordExample\\sample_0002.ply",
+        "source_sha256": "c5b53fecced243efe5673a0b38f9b2a47d7c456b08717f9641a1dccf4823aa1f",
+        "posq": 16,
+        "input_points": 80278,
+        "prequantized": true,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "a6251f027561ceed90432261f411d003332622ee15ed3d2fb879ded34c46f50b",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.003297400000064954
+    },
+    {
+      "case_id": "001.sample_0002.ply.q16.morton3_sort",
+      "suite": "morton3_sort",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\FordExample\\sample_0002.ply",
+        "source_sha256": "c5b53fecced243efe5673a0b38f9b2a47d7c456b08717f9641a1dccf4823aa1f",
+        "posq": 16,
+        "input_points": 80278,
+        "prequantized": true,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "a6251f027561ceed90432261f411d003332622ee15ed3d2fb879ded34c46f50b",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.028287300000101823
+    },
+    {
+      "case_id": "001.sample_0002.ply.q16.down_once",
+      "suite": "down_once",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\FordExample\\sample_0002.ply",
+        "source_sha256": "c5b53fecced243efe5673a0b38f9b2a47d7c456b08717f9641a1dccf4823aa1f",
+        "posq": 16,
+        "input_points": 80278,
+        "prequantized": true,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "a6251f027561ceed90432261f411d003332622ee15ed3d2fb879ded34c46f50b",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.005576799999744253
+    },
+    {
+      "case_id": "001.sample_0002.ply.q16.build_hierarchy",
+      "suite": "build_hierarchy",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\FordExample\\sample_0002.ply",
+        "source_sha256": "c5b53fecced243efe5673a0b38f9b2a47d7c456b08717f9641a1dccf4823aa1f",
+        "posq": 16,
+        "input_points": 80278,
+        "prequantized": true,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "a6251f027561ceed90432261f411d003332622ee15ed3d2fb879ded34c46f50b",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.0735024999999041
+    },
+    {
+      "case_id": "002.sample_0001.ply.q16.morton3_code",
+      "suite": "morton3_code",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\SemanticKITTIExample\\sample_0001.ply",
+        "source_sha256": "7ffed2554cd7efba5751f9dac610bd767b7b5837c7a551adc320f1d5c7836f64",
+        "posq": 16,
+        "input_points": 126012,
+        "prequantized": false,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "ac11e040b2db077ceff4d51df30512b27362e0d27fddb9cef86d2a23ae6a24aa",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.0118029000000206
+    },
+    {
+      "case_id": "002.sample_0001.ply.q16.morton3_sort",
+      "suite": "morton3_sort",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\SemanticKITTIExample\\sample_0001.ply",
+        "source_sha256": "7ffed2554cd7efba5751f9dac610bd767b7b5837c7a551adc320f1d5c7836f64",
+        "posq": 16,
+        "input_points": 126012,
+        "prequantized": false,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "ac11e040b2db077ceff4d51df30512b27362e0d27fddb9cef86d2a23ae6a24aa",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.05494029999999839
+    },
+    {
+      "case_id": "002.sample_0001.ply.q16.down_once",
+      "suite": "down_once",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\SemanticKITTIExample\\sample_0001.ply",
+        "source_sha256": "7ffed2554cd7efba5751f9dac610bd767b7b5837c7a551adc320f1d5c7836f64",
+        "posq": 16,
+        "input_points": 126012,
+        "prequantized": false,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "ac11e040b2db077ceff4d51df30512b27362e0d27fddb9cef86d2a23ae6a24aa",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.008805100000245147
+    },
+    {
+      "case_id": "002.sample_0001.ply.q16.build_hierarchy",
+      "suite": "build_hierarchy",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\SemanticKITTIExample\\sample_0001.ply",
+        "source_sha256": "7ffed2554cd7efba5751f9dac610bd767b7b5837c7a551adc320f1d5c7836f64",
+        "posq": 16,
+        "input_points": 126012,
+        "prequantized": false,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "ac11e040b2db077ceff4d51df30512b27362e0d27fddb9cef86d2a23ae6a24aa",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.0892425999995794
+    },
+    {
+      "case_id": "003.sample_0002.ply.q16.morton3_code",
+      "suite": "morton3_code",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\SemanticKITTIExample\\sample_0002.ply",
+        "source_sha256": "433278fee4ae10ed7567a24316d38889b7dab112217adcfa0b791c61e9661393",
+        "posq": 16,
+        "input_points": 125756,
+        "prequantized": false,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "eec9140c5602c3d339908fefffec7cc9bae6b757b3d67abd5a84e80960e30d34",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.006391500000063388
+    },
+    {
+      "case_id": "003.sample_0002.ply.q16.morton3_sort",
+      "suite": "morton3_sort",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\SemanticKITTIExample\\sample_0002.ply",
+        "source_sha256": "433278fee4ae10ed7567a24316d38889b7dab112217adcfa0b791c61e9661393",
+        "posq": 16,
+        "input_points": 125756,
+        "prequantized": false,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "eec9140c5602c3d339908fefffec7cc9bae6b757b3d67abd5a84e80960e30d34",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.055862100000013015
+    },
+    {
+      "case_id": "003.sample_0002.ply.q16.down_once",
+      "suite": "down_once",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\SemanticKITTIExample\\sample_0002.ply",
+        "source_sha256": "433278fee4ae10ed7567a24316d38889b7dab112217adcfa0b791c61e9661393",
+        "posq": 16,
+        "input_points": 125756,
+        "prequantized": false,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "eec9140c5602c3d339908fefffec7cc9bae6b757b3d67abd5a84e80960e30d34",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.010347099999762577
+    },
+    {
+      "case_id": "003.sample_0002.ply.q16.build_hierarchy",
+      "suite": "build_hierarchy",
+      "status": "passed",
+      "execution_kind": "hardware",
+      "cuda_execution_validated": false,
+      "correctness": {
+        "check_passed": true,
+        "metrics": {}
+      },
+      "timing": null,
+      "details": {
+        "file": "D:\\Embedded-System\\ELiCv1\\data\\SemanticKITTIExample\\sample_0002.ply",
+        "source_sha256": "433278fee4ae10ed7567a24316d38889b7dab112217adcfa0b791c61e9661393",
+        "posq": 16,
+        "input_points": 125756,
+        "prequantized": false,
+        "scale": 0.001,
+        "offset": 131072.0,
+        "input_dtype": "float64",
+        "quantization": "preserve reader dtype (PLY float64 / BIN float32); prequantized tensor shifts +offset only if min<0; otherwise NumPy points/scale+offset before tensor conversion; PyTorch round / posQ",
+        "quantized_sha256": "eec9140c5602c3d339908fefffec7cc9bae6b757b3d67abd5a84e80960e30d34",
+        "uses_cuda": false,
+        "baseline": "current optimized source before fused prototype",
+        "timing_scope": "CPU operator with Python/ctypes bridge and output allocation; excludes one-time compilation"
+      },
+      "timing_disabled_reason": "correctness_only",
+      "case_wall_seconds": 0.08705240000017511
+    }
+  ],
+  "summary": {
+    "status": "passed",
+    "exit_code": 0,
+    "case_counts": {
+      "passed": 16,
+      "failed": 0,
+      "error": 0,
+      "unavailable": 0,
+      "skipped": 0
+    },
+    "correctness": {
+      "checked_cases": 16,
+      "passed_cases": 16,
+      "pass_rate": 1.0,
+      "meaning": "Fraction of completed correctness cases that pass; unavailable/error cases do not count as correct"
+    },
+    "coverage_complete": true,
+    "cuda_execution_validated": false
+  }
+}

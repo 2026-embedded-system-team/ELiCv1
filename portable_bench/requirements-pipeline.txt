@@ -1,0 +1,6 @@
+# Optional: full trained-network comparison, in a compatible real CUDA environment.
+# TorchSparse must be installed separately for the selected PyTorch/CUDA ABI.
+-r requirements-integration.txt
+pandas>=2.0
+open3d>=0.18
+tqdm>=4.65

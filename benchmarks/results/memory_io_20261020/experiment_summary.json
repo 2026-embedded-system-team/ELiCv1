@@ -1,0 +1,43 @@
+{
+  "baseline": "current working tree before this experiment; not the original frozen reference",
+  "retained": {
+    "file": "csrc/arithmetic_core.h",
+    "change": "bounded four-byte loads into a 64-bit bit reservoir; logical byte counts and zero padding preserved"
+  },
+  "cpu_integer_decode_real_clouds_posq16": {
+    "before_sum_medians_ms": 48.9337,
+    "after_sum_medians_ms": 42.7891,
+    "speedup": 1.143601992096118,
+    "time_reduction_percent": 12.556990376775111,
+    "aggregation": "sum of per-cloud paired medians; not mean speedup"
+  },
+  "benchmark": "bitreader_final.json",
+  "rejected_tensor_trial": {
+    "reason": "no stable improvement in real-cloud total hierarchy latency",
+    "aggregate_before_ms": 161.1505,
+    "aggregate_after_ms": 162.3079,
+    "aggregate_speedup": 0.9928691086509036,
+    "sources": "trials/tensor_batch/src",
+    "results": "trials/tensor_batch/tensor_benchmark.json",
+    "production_morton_and_cdf_restored": true
+  },
+  "validation": {
+    "pytest": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "3",
+      "tests": "139",
+      "time": "50.075",
+      "timestamp": "2026-10-20T16:00:40.983920+08:00",
+      "hostname": "LAPTOP-QFAEHS2I"
+    },
+    "reader_checks": 5959833,
+    "decoder_cases": 24,
+    "real_geometry_cases": 4,
+    "original_arithmetic_compatibility_cases": 447
+  },
+  "reports_verified_unchanged": 17,
+  "scope": "CPU integer arithmetic decoding, empirical per-level CDFs from four full point clouds; CUDA unavailable",
+  "synthetic_uniform_speedup": 0.992536705
+}

@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:elic-portable-bench:result:1.0",
+  "title": "ELiC portable benchmark result 1.0",
+  "type": "object",
+  "required": ["schema_version", "tool", "created_utc", "config", "environment", "backend", "provenance", "cases", "summary", "elapsed_seconds"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "tool": {
+      "type": "object", "required": ["name", "version"],
+      "properties": {"name": {"type": "string"}, "version": {"type": "string"}}
+    },
+    "created_utc": {"type": "string", "format": "date-time"},
+    "config": {"type": "object"},
+    "environment": {"type": "object"},
+    "backend": {"type": ["object", "null"]},
+    "provenance": {"type": "object"},
+    "native_build": {"type": "object"},
+    "cases": {"type": "array", "items": {"$ref": "#/$defs/case"}},
+    "summary": {
+      "type": "object",
+      "required": ["status", "exit_code", "case_counts", "correctness", "coverage_complete", "cuda_execution_validated"],
+      "properties": {
+        "status": {"enum": ["passed", "failed", "partial", "interrupted"]},
+        "exit_code": {"enum": [0, 1, 2, 130]},
+        "case_counts": {
+          "type": "object", "required": ["passed", "failed", "error", "unavailable", "skipped"],
+          "additionalProperties": {"type": "integer", "minimum": 0}
+        },
+        "correctness": {
+          "type": "object", "required": ["checked_cases", "passed_cases", "pass_rate"],
+          "properties": {
+            "checked_cases": {"type": "integer", "minimum": 0},
+            "passed_cases": {"type": "integer", "minimum": 0},
+            "pass_rate": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+            "meaning": {"type": "string"}
+          }
+        },
+        "coverage_complete": {"type": "boolean"},
+        "cuda_execution_validated": {"type": "boolean"}
+      }
+    },
+    "elapsed_seconds": {"type": "number", "minimum": 0},
+    "interrupted": {"type": "boolean"}
+  },
+  "$defs": {
+    "stats": {
+      "type": "object",
+      "required": ["median_ms", "p10_ms", "p90_ms", "min_ms", "max_ms", "samples_ms"],
+      "properties": {
+        "median_ms": {"type": "number", "minimum": 0},
+        "p10_ms": {"type": "number", "minimum": 0},
+        "p90_ms": {"type": "number", "minimum": 0},
+        "min_ms": {"type": "number", "minimum": 0},
+        "max_ms": {"type": "number", "minimum": 0},
+        "samples_ms": {"type": "array", "minItems": 1, "items": {"type": "number", "minimum": 0}}
+      }
+    },
+    "timing": {
+      "type": "object",
+      "required": ["unit", "clock", "aggregation", "order", "warmups", "repeats", "baseline", "candidate", "cuda_synchronized", "speedup", "timing_scope"],
+      "properties": {
+        "unit": {"const": "ms"},
+        "clock": {"const": "perf_counter_ns"},
+        "aggregation": {"const": "median"},
+        "order": {"type": "string"},
+        "warmups": {"type": "integer", "minimum": 0},
+        "repeats": {"type": "integer", "minimum": 1},
+        "baseline": {"$ref": "#/$defs/stats"},
+        "candidate": {"$ref": "#/$defs/stats"},
+        "cuda_synchronized": {"type": "boolean"},
+        "speedup": {"type": ["number", "null"], "minimum": 0},
+        "timing_scope": {"type": "string"}
+      }
+    },
+    "case": {
+      "type": "object", "required": ["case_id", "suite", "status"],
+      "properties": {
+        "case_id": {"type": "string", "minLength": 1},
+        "suite": {"type": "string", "minLength": 1},
+        "status": {"enum": ["passed", "failed", "error", "unavailable", "skipped"]},
+        "execution_kind": {"enum": ["hardware", "interface_simulation"]},
+        "cuda_execution_validated": {"type": "boolean"},
+        "correctness": {
+          "type": "object", "required": ["check_passed"],
+          "properties": {"check_passed": {"type": ["boolean", "null"]}, "metrics": {"type": "object"}}
+        },
+        "timing": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/timing"}]},
+        "details": {"type": "object"},
+        "reason": {"type": "string"},
+        "traceback": {"type": "string"},
+        "timing_disabled_reason": {"type": "string"},
+        "case_wall_seconds": {"type": "number", "minimum": 0}
+      }
+    }
+  }
+}

@@ -1,12 +1,41 @@
 # ELiCv1 优化、实测与验收报告
 
-日期：2026-10-15（Asia/Hong_Kong）。原始版本：`8f3ea78a73d4a3b1ac8d58912fcca10523e4d4db`。
+更新日期：2026-10-20（Asia/Hong_Kong）；初始实测日期：2026-10-15。原始版本：`8f3ea78a73d4a3b1ac8d58912fcca10523e4d4db`。
 
 已实现并验证的 CPU 模块中，多项达到数倍至数十倍加速。完整神经网络编解码和 GPU 整机加速仍待验证：本机 CUDA 不可用，缺少 TorchSparse；生产 PyTorch C++ 绑定还因 Windows SDK/UCRT `assert.h` 缺失而无法编译。不能将以下 CPU 模块倍数作为 ELiCv1 整机倍数，也不能据此宣称完整神经 codec 已验收。
 
 本次全部可运行回归：**87 项通过、49 个子测试通过、3 项 CUDA 测试跳过，0 失败**。详见 [测试输出](test_output.txt) 和 [JUnit](tests.xml)。完整模型预检结果为 **unavailable**，生产绑定构建结果为 **unavailable**，分别保存在 [模型验收状态](pipeline_validation.json) 和 [绑定构建状态](arithmetic_torch_binding.json)。
 
-## 整体优化结果
+## 2026-10-20 访存 IO 增量优化
+
+本轮将 `csrc/arithmetic_core.h` 的 `BitReader` 从逐字节装载改为一次 `memcpy` 读取相邻 **4 字节**，并用 **64 位缓存**按需取位，减少取数和分支开销。装载允许非对齐地址；不足 4 字节的尾部单独处理，保留字节序、流末零填充、reset 和逻辑已消耗/剩余字节数。
+
+**基线是本次修改前、已经完成上一轮优化的版本**，对应核心 SHA-256 `a577a37d34fa9f3071b024d995825cd1afae6973437f1541b817257a250919bc`；本轮核心为 `5e13703a8acb77e53be43f9596986cd0e218c73de52fb3720928a449673bf00f`。下表为 CPU 单线程整数算术解码，四份完整点云的真实占用序列、逐层经验 CDF、posQ=16。预热 3 次后交替运行 15 轮，取各帧中位数；计时包含 decoder reset、码流复制和完整 decode_chunk，双方均预分配输出，编译、输入/CDF 生成和正确性检查不计时。
+
+| 点云 | 优化前 ms | 优化后 ms | 增量加速 |
+| --- | ---: | ---: | ---: |
+| Ford sample_0001 | 12.0767 | 10.6722 | 1.132× |
+| Ford sample_0002 | 11.2977 | 9.9293 | 1.138× |
+| SemanticKITTI sample_0001 | 11.7730 | 10.3471 | 1.138× |
+| SemanticKITTI sample_0002 | 13.7863 | 11.8405 | 1.164× |
+| 四帧中位数合计 | **48.9337** | **42.7891** | **1.144×** |
+
+四帧耗时合计下降 **12.56%**，折合平均 **12.2334 → 10.6973 ms/帧**。合计采用各帧中位数求和后相除。均匀合成分布为 **0.9925×**，约慢 **0.75%**；极端集中分布为 **1.0049×**，未见明显收益，完整分布结果保留在原始记录中。
+
+该结果仅覆盖上述 CPU 整数解码工作负载；神经预测、实际神经 CDF、Torch 绑定和完整 GPU 流程仍待验证。10 月 15 日的原始版本对比和 CPU 成本合计沿用当时测量，本轮结果单列展示，不与此前不同基线、不同轮次的倍数相乘，也不替换历史算术编码＋解码合计。
+
+Morton 的 XYZ 批次处理也做了尝试，真实点云完整层级构建中位数合计 **161.1505 → 162.3079 ms**（**0.9929×**），没有稳定提速；另外尝试的 CDF 缓存分块在独立 CDF 基准上也未显示稳定收益。这两项已撤回，生产 `src/morton.py` 和 `src/op.py` 保持本轮修改前版本；[试验记录](../benchmarks/results/memory_io_20261020/trials/tensor_batch/tensor_benchmark.json)及候选源码已归档。
+
+验证：完整回归 **87 项通过、49 个子测试通过、3 项 CUDA 跳过**；447 项原版整数码流兼容案例通过。新增 **5,959,833 次**直接取位/位置检查、24 组解码案例及 4 份真实占用流检查，覆盖 0–32 位取数、非整块尾部、空流、截断后的零填充、分块/reset 和逻辑字节计数，均通过。
+
+环境沿用 Windows 11 / Intel Family 6 Model 170，g++ 15.2.0，`-O3 -std=c++17 -DNDEBUG`。完整原始采样、输入与源码哈希、编译参数见 [JSON](memory_io_benchmark.json)，各分布及合计见 [CSV](memory_io_benchmark.csv)，实现细节见 [算术核说明](arithmetic_notes.md)。复现时将新结果写到独立文件：
+
+```powershell
+$elicPython = 'C:\Users\LinkZelda\miniconda3\python.exe'
+& $elicPython benchmarks/bench_bitreader_batch.py --before benchmarks/results/memory_io_20261020/before/csrc/arithmetic_core.h --benchmark --geometry-histograms --output benchmarks/results/memory_io_20261020/bitreader_retest.json
+```
+
+## 2026-10-15 整体优化结果（历史实测）
 
 本轮在四份真实点云、共 412,378 个输入点上，完整几何层级构建的平均耗时由 **295.522 ms/帧降至 22.094 ms/帧**，汇总加速 **13.376×**。BoE 离线完整直方图收集汇总加速 **13.618×**；PLY 读写合计和经验 CDF 的整数算术编解码合计分别为 **2.240×**、**1.482×**。
 
@@ -65,7 +94,7 @@
 1. `src/morton.py`：先按 Morton 整数排序，再相邻去重，去掉二维 unique 的额外排序；位扩张复用临时存储。单层下采样直接用 `code & 7` 得到子八分体，仅对父结点提取坐标。`build_hierarchy` 只读取一次最大位深，去掉逐层主机同步及无用克隆。
 2. 特征和坐标上采样按实际占用的 parent/child 索引 gather，避免实体化 `8N×C` 特征和所有候选坐标；联合上采样共享索引。保持 Morton 顺序、坐标与特征对齐；训练特征梯度保留。
 3. `src/op.py`：用精确可表示的常量代替每次构造标量 tensor/pow，按 device 缓存 CDF 位置增量；保持 round、int16 和末项 65536 的原约定。
-4. `csrc/arithmetic_core.h`：区间状态使用局部变量，CLZ 批量处理 E1/E2/E3 与 bit I/O，常规 CDF 用四次乘法比较替代逐符号除法；极偏 CDF 保留原搜索。`arithmetic_coding.cpp` 保持 API，并在纯 Tensor Chunk 调用时释放 GIL。
+4. `csrc/arithmetic_core.h`：区间状态使用局部变量，CLZ 批量处理 E1/E2/E3 与 bit I/O，常规 CDF 用四次乘法比较替代逐符号除法；极偏 CDF 保留原搜索。10 月 20 日新增相邻 4 字节批量装载和 64 位输入缓存，保留尾部与逻辑字节计数语义。`arithmetic_coding.cpp` 保持 API，并在纯 Tensor Chunk 调用时释放 GIL。
 5. `src/runtime.py`、`compress.py`：两阶段 CDF/符号按原顺序合并为一次 Chunk，减少传输/调用；单工作线程 FIFO 可选重叠 CPU 算术编码和下一层 GPU 预测，finish 等待后重置，限制队列长度。默认关闭异步，等待 GPU 验收。ELiC PDF 第 13–14 页补充 E 节报告的是论文自身约 1.142×，并非本机结果。
 6. `src/io.py`：按 PLY header 只读 vertex 的命名 XYZ 列，NumPy 批量解析/写出，移除无用 Open3D 对象；有限线程替代固定 64 进程。写出直接覆盖，修复 Windows 下删除失败后追加重复 PLY 的问题。输出以 float32 的 9 位有效数字保值，ASCII 文本/文件大小可能变化。
 7. `src/boe.py`、`BoE_cluster.py`：统计占用直方图无需空间排序，移除每层四次排序，复用新层级构建；保持逐层 32 bin 数值、位深标签与样本截断顺序。
@@ -80,6 +109,7 @@ ELiC 的 Morton/跨位深传播已是原项目算法，不能把论文相对其�
 | Morton/占用/传播 | 与冻结原版逐元素比较；全部 256 占用符号、21 位边界、重复/空输入、随机多层重建、32/64 通道、显式多 batch 后备模式。前向精确一致；double 梯度因累加顺序不同采用 1e-14 容差。codec 仍使用原来的 batch=1。 |
 | CDF | float16/32/64、17 项及其他长度、零概率、边界与半整数取整，int16 精确相等。测试 float16 转换不表示模型启用 FP16。 |
 | 算术核 | 447 组随机/边界、全部符号、最小频率、长 E3 pending、不同 Chunk 切分、中间 buffer、字节消耗、默认及非默认 reset/finish、空流；编码字节相同、旧新双向互解。 |
+| 批量取位缓存（10 月 20 日） | 5,959,833 次直接取位/位置检查、24 组解码及 4 份真实占用流检查；覆盖 0–32 位、流末尾部、截断零填充、分块/reset；符号和已消耗/剩余字节数一致。 |
 | 真实几何＋整数熵编码 | 4 份完整样例 × 5 档 posQ=4/8/16/32/64，逐层占用/坐标精确一致；原新编码、四种编解码组合与量化去重目标一致。此项采用由已解坐标和阶段决定的确定性 CDF，**不含训练后神经预测**。 |
 | BoE | 冻结原脚本循环 AST 对照，逐层 32 bin、位深标签、跨帧截断顺序、冻结模型的中心选择及平局处理一致。未重新聚类或训练。 |
 | I/O | 4 份实际点云原新读入精确一致；额外属性/列重排/其他元素/空单点/损坏与截断/BIN；包含负零、非规格数的 float32 回读；覆盖写出、空格路径与线程顺序。 |
@@ -88,11 +118,11 @@ ELiC 的 Morton/跨位深传播已是原项目算法，不能把论文相对其�
 
 ## 性能测试方法与复现
 
-环境：Windows 11，Intel Family 6 Model 170，22 个逻辑处理器；Python 3.13.12、PyTorch 2.12.0+cpu、NumPy 2.4.2。几何/CDF/BoE 固定 **1 线程**，原版和优化版相同；I/O 默认最多 min(文件数, CPU 数, 8) 个线程，另有顺序对照。基准依次独占运行，预热 2–3 次，交替原新计时 7/9/11 次，取中位数，定义加速比为 `median(T_original)/median(T_optimized)`。这些范围是四个样例的观测范围，非置信区间。
+环境：Windows 11，Intel Family 6 Model 170，22 个逻辑处理器；Python 3.13.12、PyTorch 2.12.0+cpu、NumPy 2.4.2。几何/CDF/BoE 固定 **1 线程**，原版和优化版相同；I/O 默认最多 min(文件数, CPU 数, 8) 个线程，另有顺序对照。基准依次独占运行，预热 2–3 次，历史原新对比交替计时 7/9/11 次；10 月 20 日批量读取增量对比交替计时 15 次，均取中位数。加速比为各自基线与优化耗时中位数之比。这些范围是四个样例的观测范围，非置信区间。
 
 几何与 CDF 比较只计模块调用，输入预先装载；I/O 计打开/解析或格式化/关闭，使用系统缓存、不做 fsync，不代表冷盘速度。原始 occupancy lookup 表只迁移到 CPU，保留其原计算。原 I/O 基线移除了无用 Open3D 构造；批量基线为原单文件读取的顺序调用，因为原 Pool(64) 的 Windows 驱动不可直接运行。算术基线由冻结源码提取，仅替换 Torch/Python 容器接口并去掉 Torch 校验宏，优化核仍检查符号范围；这有利于基线，并未夸大收益。
 
-源码与权重哈希见 [验证清单](validation_manifest.json)。所有模块和样例的原版毫秒、优化毫秒、倍数集中在 [CSV](module_speedups.csv)。原始记录分别为 [几何](../benchmarks/results_morton.json)、[BoE](boe_cpu.json)、[I/O](io_benchmark.json)、[CDF/合成](modules_cpu.json)、[算术核](arithmetic_benchmark.json)。
+源码与权重哈希见 [验证清单](validation_manifest.json)。历史模块和样例的原版毫秒、优化毫秒、倍数集中在 [CSV](module_speedups.csv)。历史原始记录分别为 [几何](../benchmarks/results_morton.json)、[BoE](boe_cpu.json)、[I/O](io_benchmark.json)、[CDF/合成](modules_cpu.json)、[算术核](arithmetic_benchmark.json)；本轮批量读取增量对比单列于 [JSON](memory_io_benchmark.json) 和 [CSV](memory_io_benchmark.csv)。
 
 完整命令与输入单位说明见 [复现指南](../OPTIMIZATION.md)。重点入口：
 

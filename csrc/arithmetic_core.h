@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <stdexcept>
 #include <string>
 #if defined(_MSC_VER)
@@ -80,27 +81,54 @@ class BitReader {
 public:
     size_t position{0};
     void reset(const std::string* bytes) {
-        bytes_ = bytes; position = 0; cached_bits_ = 0; cache_ = 0;
+        bytes_ = bytes; position = 0; cursor_ = 0; cached_bits_ = 0; cache_ = 0;
     }
     // Original format pads the stream with zeros after the last byte.
     inline uint32_t get_bits(unsigned width) {
-        uint32_t result = 0;
-        while (width) {
-            if (!cached_bits_) {
-                if (!bytes_ || position == bytes_->size())
-                    return static_cast<uint32_t>(static_cast<uint64_t>(result) << width);
-                cache_ = static_cast<uint8_t>((*bytes_)[position++]);
-                cached_bits_ = 8;
+        if (cached_bits_ < width) {
+            const size_t remaining = bytes_ ? bytes_->size() - cursor_ : 0;
+            if (remaining >= sizeof(uint32_t)) {
+                // memcpy permits unaligned addresses and reads exactly four
+                // adjacent bytes. Interpret their stream order explicitly.
+                uint32_t word;
+                std::memcpy(&word, bytes_->data() + cursor_, sizeof(word));
+#if defined(_MSC_VER)
+                word = _byteswap_ulong(word);
+#elif defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+                word = __builtin_bswap32(word);
+#elif !defined(__BYTE_ORDER__) || __BYTE_ORDER__ != __ORDER_BIG_ENDIAN__
+                const auto* p = reinterpret_cast<const unsigned char*>(bytes_->data() + cursor_);
+                word = (uint32_t{p[0]} << 24) | (uint32_t{p[1]} << 16) |
+                       (uint32_t{p[2]} << 8) | uint32_t{p[3]};
+#endif
+                cache_ = (cache_ << 32) | word;
+                cached_bits_ += 32;
+                cursor_ += sizeof(word);
+            } else {
+                // At most three bytes remain; never read past the string.
+                for (size_t i = 0; i < remaining; ++i) {
+                    cache_ = (cache_ << 8) | static_cast<uint8_t>((*bytes_)[cursor_++]);
+                    cached_bits_ += 8;
+                }
             }
-            unsigned take = std::min(width, cached_bits_);
-            cached_bits_ -= take; width -= take;
-            result = (result << take) | ((cache_ >> cached_bits_) & low_mask(take));
         }
+        uint32_t result;
+        if (cached_bits_ < width) {
+            result = static_cast<uint32_t>(cache_ << (width - cached_bits_)) & low_mask(width);
+            cache_ = 0;
+            cached_bits_ = 0;
+        } else {
+            cached_bits_ -= width;
+            result = static_cast<uint32_t>(cache_ >> cached_bits_) & low_mask(width);
+        }
+        // Count bytes logically consumed, excluding complete prefetched bytes.
+        position = cursor_ - cached_bits_ / 8;
         return result;
     }
 private:
     const std::string* bytes_{nullptr};
-    uint8_t cache_{0};
+    size_t cursor_{0};
+    uint64_t cache_{0};
     unsigned cached_bits_{0};
 };
 

@@ -80,5 +80,26 @@
     "Actual model CDF generation and normalization workload",
     "CPU/GPU transfers and synchronization",
     "Model/JIT startup, total peak memory and full neural compression rate"
+  ],
+  "historical_measurement_date": "2026-10-15",
+  "incremental_experiments": [
+    {
+      "workflow": "bitreader_batch_load",
+      "date": "2026-10-20",
+      "frames": 4,
+      "baseline_kind": "previous optimized implementation immediately before the memory-I/O change",
+      "baseline_core_sha256": "a577a37d34fa9f3071b024d995825cd1afae6973437f1541b817257a250919bc",
+      "optimized_core_sha256": "5e13703a8acb77e53be43f9596986cd0e218c73de52fb3720928a449673bf00f",
+      "baseline_total_ms": 48.9337,
+      "optimized_total_ms": 42.7891,
+      "baseline_mean_ms": 12.233425,
+      "optimized_mean_ms": 10.697275,
+      "speedup": 1.143601992096118,
+      "time_reduction_percent": 12.556990376775111,
+      "method": "Sum per-cloud decode medians, then baseline_sum / optimized_sum",
+      "source": "reports/memory_io_benchmark.json",
+      "scope": "CPU integer decode; posQ=16; actual occupancy symbols and per-layer empirical CDFs",
+      "included_in_historical_cpu_cost_budget": false
+    }
   ]
 }

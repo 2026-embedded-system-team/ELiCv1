@@ -1,0 +1,11 @@
+{
+  "device": "cuda",
+  "suites": ["modules", "io", "arithmetic", "geometry"],
+  "synthetic": true,
+  "points": 16384,
+  "channels": 32,
+  "posq": [16],
+  "warmups": 3,
+  "repeats": 15,
+  "threads": 1
+}

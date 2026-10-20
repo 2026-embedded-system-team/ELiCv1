@@ -1,0 +1,5 @@
+# Optional: repository pytest checks and real PyTorch C++ binding verification.
+-r requirements.txt
+pytest>=7.4
+setuptools>=68
+ninja>=1.11

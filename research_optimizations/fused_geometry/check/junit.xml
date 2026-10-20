@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="ELiCv1 portable benchmark" tests="16" failures="0" errors="0" skipped="0">
+  <testcase classname="morton3_code" name="000.sample_0001.ply.q16.morton3_code" />
+  <testcase classname="morton3_sort" name="000.sample_0001.ply.q16.morton3_sort" />
+  <testcase classname="down_once" name="000.sample_0001.ply.q16.down_once" />
+  <testcase classname="build_hierarchy" name="000.sample_0001.ply.q16.build_hierarchy" />
+  <testcase classname="morton3_code" name="001.sample_0002.ply.q16.morton3_code" />
+  <testcase classname="morton3_sort" name="001.sample_0002.ply.q16.morton3_sort" />
+  <testcase classname="down_once" name="001.sample_0002.ply.q16.down_once" />
+  <testcase classname="build_hierarchy" name="001.sample_0002.ply.q16.build_hierarchy" />
+  <testcase classname="morton3_code" name="002.sample_0001.ply.q16.morton3_code" />
+  <testcase classname="morton3_sort" name="002.sample_0001.ply.q16.morton3_sort" />
+  <testcase classname="down_once" name="002.sample_0001.ply.q16.down_once" />
+  <testcase classname="build_hierarchy" name="002.sample_0001.ply.q16.build_hierarchy" />
+  <testcase classname="morton3_code" name="003.sample_0002.ply.q16.morton3_code" />
+  <testcase classname="morton3_sort" name="003.sample_0002.ply.q16.morton3_sort" />
+  <testcase classname="down_once" name="003.sample_0002.ply.q16.down_once" />
+  <testcase classname="build_hierarchy" name="003.sample_0002.ply.q16.build_hierarchy" />
+</testsuite>

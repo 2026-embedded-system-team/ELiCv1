@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.venv/
+results/
+dist/
+.build/
+*.zip

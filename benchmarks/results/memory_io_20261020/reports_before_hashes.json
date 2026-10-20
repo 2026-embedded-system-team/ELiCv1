@@ -1,0 +1,70 @@
+﻿[
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\arithmetic_benchmark.json",
+        "Hash":  "E27213E0E2FBF4B8BFACC7BCB53B89EC76E920AFDA68D123085BBEA742FCAAC6"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\arithmetic_notes.md",
+        "Hash":  "63D2D570840863870B71DCD0CCF4B5F06335FA3755B5ED254E7E55569492C8F9"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\arithmetic_torch_binding.json",
+        "Hash":  "61BCBFF491A714E689B762DA89E98A181CBFE97FF6BA1CBC1A7B75758DF36CE3"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\arithmetic_torch_build.log",
+        "Hash":  "64356F2A1A16EBDC7E2E8878D014D928C17976793E3104E2960B6ACF3E84822F"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\boe_cpu.json",
+        "Hash":  "72B2CE92AC1A3939EF577DDC821E9BEDB7BAC070F9DFBEA9DBEDFFA99C7458AF"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\io_benchmark.csv",
+        "Hash":  "7F3868A5B6CE264C455E16BE68F61EDFA0F618532BEBA6A92F00025E086BE872"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\io_benchmark.json",
+        "Hash":  "D92621EC805891E1A8C59E375BF8B4059776FDC716702346AC9A40A4C0B8AA15"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\modules_cpu.json",
+        "Hash":  "36DE11C281CDDECE75783D7CDB940AFA1C24F2CB6E8CA2AA55E78FE9C7580897"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\module_speedups.csv",
+        "Hash":  "7390F16EF758CA7EE9D350E61F3488E96F8221DB4E22FD3F2EAD4C856BE71353"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\optimization_report.md",
+        "Hash":  "0A6C0C5708E874241BF006479E57A42A5B6F13B0C24D1F5F6874148911E1CF61"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\overall_summary.csv",
+        "Hash":  "FD794A928876DD3A1B776028FA0349185E4A96D533B1D26547FF1AC0EA6CEA8C"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\overall_summary.json",
+        "Hash":  "BE8DEA592DD22B17F486BBBE1263C5F78A69DFE188C74149C9D71F5FCCF3F738"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\paper_notes.md",
+        "Hash":  "E2B943DFDA9A8EF958072F184C3A5562F136FD0A3CCC0F3CFFF28C632B82AF10"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\pipeline_validation.json",
+        "Hash":  "6592D829A3FCDAAEB67106A10286533887162CFD84D5FD4434E4A8935BD246C9"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\tests.xml",
+        "Hash":  "D4D32DB830554EAE265E6B26334E84077FC448DE0F2715DBAEF4770E68253FA4"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\test_output.txt",
+        "Hash":  "6B48C161C7E464DBE984175A35E8CB516BBD9FE65CFBFD14ECC163E06391E8DA"
+    },
+    {
+        "Path":  "D:\\Embedded-System\\ELiCv1\\reports\\validation_manifest.json",
+        "Hash":  "D4E2C298AEA113067F8A54B85739D577C701BA94BC702FDB0F27B17E2676BACC"
+    }
+]

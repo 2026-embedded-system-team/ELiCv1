@@ -1,0 +1,4 @@
+label,group,stage,rows,length,needs_normalization,file,before_median_ms,before_p10_ms,before_p90_ms,after_median_ms,after_p10_ms,after_p90_ms,speedup,exact_equal,inputs_unchanged
+synthetic/64/morton3_code,synthetic_morton,morton3_code,64,,,,,,,,,,,True,True
+cdf/64/normalize=True,cdf,convert_to_int_and_normalize,64,17,True,,,,,,,,,True,True
+cdf/64/normalize=False,cdf,convert_to_int_and_normalize,64,17,False,,,,,,,,,True,True

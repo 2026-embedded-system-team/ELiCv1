@@ -1,0 +1,4 @@
+# Install an appropriate CPU/CUDA PyTorch wheel separately for your platform.
+# No installer is invoked by the benchmark itself. Python >= 3.10 is required.
+numpy>=1.24
+torch>=2.2

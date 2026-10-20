@@ -7,6 +7,8 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+MEMORY_IO_DIR = 'benchmarks/results/memory_io_20261020'
+REPORT_DATE = '2026-10-20'
 
 
 def read(name):
@@ -21,6 +23,67 @@ def spread(values):
     values = list(values)
     lo, hi = min(values), max(values)
     return f'{lo:.2f}×' if len(values) == 1 else f'{lo:.2f}–{hi:.2f}×'
+
+
+def memory_io_summary(data):
+    """Keep the incremental comparison separate from the original baseline."""
+    samples = [row for row in data['rows'] if row['case'].startswith('histogram_')]
+    assert len(samples) == len(data['geometry_histogram_inputs']) == 4
+    before = sum(row['before_ms'] for row in samples)
+    after = sum(row['after_ms'] for row in samples)
+    assert before == data['geometry_aggregate']['before_sum_medians_ms']
+    assert after == data['geometry_aggregate']['after_sum_medians_ms']
+    assert digest(ROOT/'csrc/arithmetic_core.h') == data['optimized_sha256']
+    return dict(workflow='bitreader_batch_load', date=REPORT_DATE, frames=len(samples),
+                baseline_kind='previous optimized implementation immediately before the memory-I/O change',
+                baseline_core_sha256=data['baseline_sha256'], optimized_core_sha256=data['optimized_sha256'],
+                baseline_total_ms=before, optimized_total_ms=after,
+                baseline_mean_ms=before/len(samples), optimized_mean_ms=after/len(samples),
+                speedup=before/after, time_reduction_percent=(1-after/before)*100,
+                method='Sum per-cloud decode medians, then baseline_sum / optimized_sum',
+                source='reports/memory_io_benchmark.json',
+                scope='CPU integer decode; posQ=16; actual occupancy symbols and per-layer empirical CDFs',
+                included_in_historical_cpu_cost_budget=False)
+
+
+def memory_io_section(data, experiment, aggregate):
+    samples = [row for row in data['rows'] if row['case'].startswith('histogram_')]
+    labels = {'histogram_Ford_sample_0001': 'Ford sample_0001',
+              'histogram_Ford_sample_0002': 'Ford sample_0002',
+              'histogram_SemanticKITTI_sample_0001': 'SemanticKITTI sample_0001',
+              'histogram_SemanticKITTI_sample_0002': 'SemanticKITTI sample_0002'}
+    table = '\n'.join(f'| {labels[row["case"]]} | {row["before_ms"]:.4f} | {row["after_ms"]:.4f} | '
+                      f'{row["speedup"]:.3f}× |' for row in samples)
+    uniform = next(row for row in data['rows'] if row['case'] == 'uniform')
+    concentrated = next(row for row in data['rows'] if row['case'] == 'concentrated')
+    trial = experiment['rejected_tensor_trial']
+    return f'''## 2026-10-20 访存 IO 增量优化
+
+本轮将 `csrc/arithmetic_core.h` 的 `BitReader` 从逐字节装载改为一次 `memcpy` 读取相邻 **4 字节**，并用 **64 位缓存**按需取位，减少取数和分支开销。装载允许非对齐地址；不足 4 字节的尾部单独处理，保留字节序、流末零填充、reset 和逻辑已消耗/剩余字节数。
+
+**基线是本次修改前、已经完成上一轮优化的版本**，对应核心 SHA-256 `{data['baseline_sha256']}`；本轮核心为 `{data['optimized_sha256']}`。下表为 CPU 单线程整数算术解码，四份完整点云的真实占用序列、逐层经验 CDF、posQ=16。预热 3 次后交替运行 15 轮，取各帧中位数；计时包含 decoder reset、码流复制和完整 decode_chunk，双方均预分配输出，编译、输入/CDF 生成和正确性检查不计时。
+
+| 点云 | 优化前 ms | 优化后 ms | 增量加速 |
+| --- | ---: | ---: | ---: |
+{table}
+| 四帧中位数合计 | **{aggregate['baseline_total_ms']:.4f}** | **{aggregate['optimized_total_ms']:.4f}** | **{aggregate['speedup']:.3f}×** |
+
+四帧耗时合计下降 **{aggregate['time_reduction_percent']:.2f}%**，折合平均 **{aggregate['baseline_mean_ms']:.4f} → {aggregate['optimized_mean_ms']:.4f} ms/帧**。合计采用各帧中位数求和后相除。均匀合成分布为 **{uniform['speedup']:.4f}×**，约慢 **{(1/uniform['speedup']-1)*100:.2f}%**；极端集中分布为 **{concentrated['speedup']:.4f}×**，未见明显收益，完整分布结果保留在原始记录中。
+
+该结果仅覆盖上述 CPU 整数解码工作负载；神经预测、实际神经 CDF、Torch 绑定和完整 GPU 流程仍待验证。10 月 15 日的原始版本对比和 CPU 成本合计沿用当时测量，本轮结果单列展示，不与此前不同基线、不同轮次的倍数相乘，也不替换历史算术编码＋解码合计。
+
+Morton 的 XYZ 批次处理也做了尝试，真实点云完整层级构建中位数合计 **{trial['aggregate_before_ms']:.4f} → {trial['aggregate_after_ms']:.4f} ms**（**{trial['aggregate_speedup']:.4f}×**），没有稳定提速；另外尝试的 CDF 缓存分块在独立 CDF 基准上也未显示稳定收益。这两项已撤回，生产 `src/morton.py` 和 `src/op.py` 保持本轮修改前版本；[试验记录](../{MEMORY_IO_DIR}/trials/tensor_batch/tensor_benchmark.json)及候选源码已归档。
+
+验证：完整回归 **87 项通过、49 个子测试通过、3 项 CUDA 跳过**；447 项原版整数码流兼容案例通过。新增 **{data['reader_checks']:,} 次**直接取位/位置检查、{data['decoder_cases']} 组解码案例及 {data['geometry_correctness_cases']} 份真实占用流检查，覆盖 0–32 位取数、非整块尾部、空流、截断后的零填充、分块/reset 和逻辑字节计数，均通过。
+
+环境沿用 Windows 11 / Intel Family 6 Model 170，g++ 15.2.0，`-O3 -std=c++17 -DNDEBUG`。完整原始采样、输入与源码哈希、编译参数见 [JSON](memory_io_benchmark.json)，各分布及合计见 [CSV](memory_io_benchmark.csv)，实现细节见 [算术核说明](arithmetic_notes.md)。复现时将新结果写到独立文件：
+
+```powershell
+$elicPython = 'C:\\Users\\LinkZelda\\miniconda3\\python.exe'
+& $elicPython benchmarks/bench_bitreader_batch.py --before benchmarks/results/memory_io_20261020/before/csrc/arithmetic_core.h --benchmark --geometry-histograms --output benchmarks/results/memory_io_20261020/bitreader_retest.json
+```
+
+'''
 
 
 def overall_summary(morton, boe, io, arithmetic, pipeline):
@@ -82,7 +145,24 @@ def main():
     arithmetic = read('reports/arithmetic_benchmark.json')
     pipeline = read('reports/pipeline_validation.json')
     binding = read('reports/arithmetic_torch_binding.json')
+    memory_io = read(f'{MEMORY_IO_DIR}/bitreader_final.json')
+    experiment = read(f'{MEMORY_IO_DIR}/experiment_summary.json')
+    incremental = memory_io_summary(memory_io)
+    (ROOT/'reports/memory_io_benchmark.json').write_bytes((ROOT/MEMORY_IO_DIR/'bitreader_final.json').read_bytes())
+    with (ROOT/'reports/memory_io_benchmark.csv').open('w', encoding='utf-8-sig', newline='') as stream:
+        writer = csv.DictWriter(stream, fieldnames=['scope', 'module', 'sample', 'baseline_kind',
+                                                   'baseline_ms', 'optimized_ms', 'speedup'])
+        writer.writeheader()
+        for value in memory_io['rows']:
+            writer.writerow(dict(scope='memory_io_incremental_cpu', module='bitreader_decode', sample=value['case'],
+                                 baseline_kind=incremental['baseline_kind'], baseline_ms=value['before_ms'],
+                                 optimized_ms=value['after_ms'], speedup=value['speedup']))
+        writer.writerow(dict(scope='memory_io_incremental_cpu', module='bitreader_decode', sample='four_real_clouds_sum_medians',
+                             baseline_kind=incremental['baseline_kind'], baseline_ms=incremental['baseline_total_ms'],
+                             optimized_ms=incremental['optimized_total_ms'], speedup=incremental['speedup']))
     overall = overall_summary(morton, boe, io, arithmetic, pipeline)
+    overall['historical_measurement_date'] = '2026-10-15'
+    overall['incremental_experiments'] = [incremental]
     (ROOT/'reports/overall_summary.json').write_text(json.dumps(overall, ensure_ascii=False, indent=2), encoding='utf-8')
     overall_fields = ['workflow', 'label', 'frames', 'baseline_total_ms', 'optimized_total_ms',
                       'baseline_mean_ms', 'optimized_mean_ms', 'speedup', 'time_reduction_percent']
@@ -153,13 +233,13 @@ def main():
                        f'{r["baseline_ms"]:.4f} | {r["optimized_ms"]:.4f} | {r["speedup"]:.3f}× |' for r in rows)
     document = f'''# ELiCv1 优化、实测与验收报告
 
-日期：2026-10-15（Asia/Hong_Kong）。原始版本：`8f3ea78a73d4a3b1ac8d58912fcca10523e4d4db`。
+更新日期：{REPORT_DATE}（Asia/Hong_Kong）；初始实测日期：2026-10-15。原始版本：`8f3ea78a73d4a3b1ac8d58912fcca10523e4d4db`。
 
 已实现并验证的 CPU 模块中，多项达到数倍至数十倍加速。完整神经网络编解码和 GPU 整机加速仍待验证：本机 CUDA 不可用，缺少 TorchSparse；生产 PyTorch C++ 绑定还因 Windows SDK/UCRT `assert.h` 缺失而无法编译。不能将以下 CPU 模块倍数作为 ELiCv1 整机倍数，也不能据此宣称完整神经 codec 已验收。
 
 本次全部可运行回归：**{passed} 项通过、{subtests} 个子测试通过、{skipped} 项 CUDA 测试跳过，0 失败**。详见 [测试输出](test_output.txt) 和 [JUnit](tests.xml)。完整模型预检结果为 **{pipeline['status']}**，生产绑定构建结果为 **{binding['status']}**，分别保存在 [模型验收状态](pipeline_validation.json) 和 [绑定构建状态](arithmetic_torch_binding.json)。
 
-## 整体优化结果
+{memory_io_section(memory_io, experiment, incremental)}## 2026-10-15 整体优化结果（历史实测）
 
 本轮在四份真实点云、共 {overall['total_input_points']:,} 个输入点上，完整几何层级构建的平均耗时由 **{overall['workflows'][0]['baseline_mean_ms']:.3f} ms/帧降至 {overall['workflows'][0]['optimized_mean_ms']:.3f} ms/帧**，汇总加速 **{overall['workflows'][0]['speedup']:.3f}×**。BoE 离线完整直方图收集汇总加速 **{overall['workflows'][1]['speedup']:.3f}×**；PLY 读写合计和经验 CDF 的整数算术编解码合计分别为 **{overall['workflows'][2]['speedup']:.3f}×**、**{overall['workflows'][3]['speedup']:.3f}×**。
 
@@ -200,7 +280,7 @@ def main():
 1. `src/morton.py`：先按 Morton 整数排序，再相邻去重，去掉二维 unique 的额外排序；位扩张复用临时存储。单层下采样直接用 `code & 7` 得到子八分体，仅对父结点提取坐标。`build_hierarchy` 只读取一次最大位深，去掉逐层主机同步及无用克隆。
 2. 特征和坐标上采样按实际占用的 parent/child 索引 gather，避免实体化 `8N×C` 特征和所有候选坐标；联合上采样共享索引。保持 Morton 顺序、坐标与特征对齐；训练特征梯度保留。
 3. `src/op.py`：用精确可表示的常量代替每次构造标量 tensor/pow，按 device 缓存 CDF 位置增量；保持 round、int16 和末项 65536 的原约定。
-4. `csrc/arithmetic_core.h`：区间状态使用局部变量，CLZ 批量处理 E1/E2/E3 与 bit I/O，常规 CDF 用四次乘法比较替代逐符号除法；极偏 CDF 保留原搜索。`arithmetic_coding.cpp` 保持 API，并在纯 Tensor Chunk 调用时释放 GIL。
+4. `csrc/arithmetic_core.h`：区间状态使用局部变量，CLZ 批量处理 E1/E2/E3 与 bit I/O，常规 CDF 用四次乘法比较替代逐符号除法；极偏 CDF 保留原搜索。10 月 20 日新增相邻 4 字节批量装载和 64 位输入缓存，保留尾部与逻辑字节计数语义。`arithmetic_coding.cpp` 保持 API，并在纯 Tensor Chunk 调用时释放 GIL。
 5. `src/runtime.py`、`compress.py`：两阶段 CDF/符号按原顺序合并为一次 Chunk，减少传输/调用；单工作线程 FIFO 可选重叠 CPU 算术编码和下一层 GPU 预测，finish 等待后重置，限制队列长度。默认关闭异步，等待 GPU 验收。ELiC PDF 第 13–14 页补充 E 节报告的是论文自身约 1.142×，并非本机结果。
 6. `src/io.py`：按 PLY header 只读 vertex 的命名 XYZ 列，NumPy 批量解析/写出，移除无用 Open3D 对象；有限线程替代固定 64 进程。写出直接覆盖，修复 Windows 下删除失败后追加重复 PLY 的问题。输出以 float32 的 9 位有效数字保值，ASCII 文本/文件大小可能变化。
 7. `src/boe.py`、`BoE_cluster.py`：统计占用直方图无需空间排序，移除每层四次排序，复用新层级构建；保持逐层 32 bin 数值、位深标签与样本截断顺序。
@@ -215,6 +295,7 @@ ELiC 的 Morton/跨位深传播已是原项目算法，不能把论文相对其�
 | Morton/占用/传播 | 与冻结原版逐元素比较；全部 256 占用符号、21 位边界、重复/空输入、随机多层重建、32/64 通道、显式多 batch 后备模式。前向精确一致；double 梯度因累加顺序不同采用 1e-14 容差。codec 仍使用原来的 batch=1。 |
 | CDF | float16/32/64、17 项及其他长度、零概率、边界与半整数取整，int16 精确相等。测试 float16 转换不表示模型启用 FP16。 |
 | 算术核 | 447 组随机/边界、全部符号、最小频率、长 E3 pending、不同 Chunk 切分、中间 buffer、字节消耗、默认及非默认 reset/finish、空流；编码字节相同、旧新双向互解。 |
+| 批量取位缓存（10 月 20 日） | {memory_io['reader_checks']:,} 次直接取位/位置检查、{memory_io['decoder_cases']} 组解码及 {memory_io['geometry_correctness_cases']} 份真实占用流检查；覆盖 0–32 位、流末尾部、截断零填充、分块/reset；符号和已消耗/剩余字节数一致。 |
 | 真实几何＋整数熵编码 | 4 份完整样例 × 5 档 posQ=4/8/16/32/64，逐层占用/坐标精确一致；原新编码、四种编解码组合与量化去重目标一致。此项采用由已解坐标和阶段决定的确定性 CDF，**不含训练后神经预测**。 |
 | BoE | 冻结原脚本循环 AST 对照，逐层 32 bin、位深标签、跨帧截断顺序、冻结模型的中心选择及平局处理一致。未重新聚类或训练。 |
 | I/O | 4 份实际点云原新读入精确一致；额外属性/列重排/其他元素/空单点/损坏与截断/BIN；包含负零、非规格数的 float32 回读；覆盖写出、空格路径与线程顺序。 |
@@ -223,11 +304,11 @@ ELiC 的 Morton/跨位深传播已是原项目算法，不能把论文相对其�
 
 ## 性能测试方法与复现
 
-环境：Windows 11，Intel Family 6 Model 170，22 个逻辑处理器；Python 3.13.12、PyTorch 2.12.0+cpu、NumPy 2.4.2。几何/CDF/BoE 固定 **1 线程**，原版和优化版相同；I/O 默认最多 min(文件数, CPU 数, 8) 个线程，另有顺序对照。基准依次独占运行，预热 2–3 次，交替原新计时 7/9/11 次，取中位数，定义加速比为 `median(T_original)/median(T_optimized)`。这些范围是四个样例的观测范围，非置信区间。
+环境：Windows 11，Intel Family 6 Model 170，22 个逻辑处理器；Python 3.13.12、PyTorch 2.12.0+cpu、NumPy 2.4.2。几何/CDF/BoE 固定 **1 线程**，原版和优化版相同；I/O 默认最多 min(文件数, CPU 数, 8) 个线程，另有顺序对照。基准依次独占运行，预热 2–3 次，历史原新对比交替计时 7/9/11 次；10 月 20 日批量读取增量对比交替计时 15 次，均取中位数。加速比为各自基线与优化耗时中位数之比。这些范围是四个样例的观测范围，非置信区间。
 
 几何与 CDF 比较只计模块调用，输入预先装载；I/O 计打开/解析或格式化/关闭，使用系统缓存、不做 fsync，不代表冷盘速度。原始 occupancy lookup 表只迁移到 CPU，保留其原计算。原 I/O 基线移除了无用 Open3D 构造；批量基线为原单文件读取的顺序调用，因为原 Pool(64) 的 Windows 驱动不可直接运行。算术基线由冻结源码提取，仅替换 Torch/Python 容器接口并去掉 Torch 校验宏，优化核仍检查符号范围；这有利于基线，并未夸大收益。
 
-源码与权重哈希见 [验证清单](validation_manifest.json)。所有模块和样例的原版毫秒、优化毫秒、倍数集中在 [CSV](module_speedups.csv)。原始记录分别为 [几何](../benchmarks/results_morton.json)、[BoE](boe_cpu.json)、[I/O](io_benchmark.json)、[CDF/合成](modules_cpu.json)、[算术核](arithmetic_benchmark.json)。
+源码与权重哈希见 [验证清单](validation_manifest.json)。历史模块和样例的原版毫秒、优化毫秒、倍数集中在 [CSV](module_speedups.csv)。历史原始记录分别为 [几何](../benchmarks/results_morton.json)、[BoE](boe_cpu.json)、[I/O](io_benchmark.json)、[CDF/合成](modules_cpu.json)、[算术核](arithmetic_benchmark.json)；本轮批量读取增量对比单列于 [JSON](memory_io_benchmark.json) 和 [CSV](memory_io_benchmark.csv)。
 
 完整命令与输入单位说明见 [复现指南](../OPTIMIZATION.md)。重点入口：
 
@@ -257,7 +338,7 @@ GPU 验收通过后才可报告整机倍数。若瓶颈仍在稀疏卷积，应�
     code_paths = [ROOT/p for p in ['BoE_cluster.py', 'compress.py', 'decompress.py', 'model.py', 'src/boe.py',
                   'src/morton.py', 'src/io.py', 'src/op.py', 'src/runtime.py', 'src/nn.py',
                   'csrc/arithmetic_core.h', 'csrc/arithmetic_coding.cpp']]
-    manifest = dict(date='2026-10-15', timezone='Asia/Hong_Kong',
+    manifest = dict(date=REPORT_DATE, timezone='Asia/Hong_Kong',
                     baseline_commit='8f3ea78a73d4a3b1ac8d58912fcca10523e4d4db',
                     code_sha256={str(p.relative_to(ROOT)).replace(chr(92), '/'): digest(p) for p in code_paths},
                     weights_sha256={str(p.relative_to(ROOT)).replace(chr(92), '/'): digest(p) for p in sorted((ROOT/'model').glob('*/*.pt'))},
@@ -265,6 +346,21 @@ GPU 验收通过后才可报告整机倍数。若瓶颈仍在稀疏卷积，应�
                     baseline_manifest_sha256=digest(ROOT/'benchmarks/reference/manifest.json'),
                     pytest=dict(passed=passed, subtests_passed=subtests, skipped_cuda=skipped, failed=0),
                     full_neural_pipeline_status=pipeline['status'], production_torch_binding_status=binding['status'])
+    manifest['memory_io_experiment'] = dict(
+        date=REPORT_DATE, baseline_kind=incremental['baseline_kind'],
+        baseline_core_sha256=memory_io['baseline_sha256'], optimized_core_sha256=memory_io['optimized_sha256'],
+        benchmark='reports/memory_io_benchmark.json', benchmark_sha256=digest(ROOT/'reports/memory_io_benchmark.json'),
+        benchmark_csv_sha256=digest(ROOT/'reports/memory_io_benchmark.csv'),
+        source_record=f'{MEMORY_IO_DIR}/bitreader_final.json',
+        reader_checks=memory_io['reader_checks'], decoder_cases=memory_io['decoder_cases'],
+        real_geometry_cases=memory_io['geometry_correctness_cases'], original_compatibility_cases=447,
+        pytest_log_sha256=digest(ROOT/'reports/test_output.txt'), pytest_junit_sha256=digest(ROOT/'reports/tests.xml'),
+        rejected_tensor_trial=f'{MEMORY_IO_DIR}/trials/tensor_batch/tensor_benchmark.json')
+    manifest['historical_arithmetic_measurement'] = dict(
+        date='2026-10-15', source='reports/arithmetic_benchmark.json',
+        optimized_core_sha256=arithmetic['core_sha256'])
+    manifest['benchmark_sha256'] = {path: digest(ROOT/path) for path in (
+        'benchmarks/bench_bitreader_batch.py', 'benchmarks/bitreader_batch_test.cpp', 'benchmarks/write_report.py')}
     (ROOT/'reports/validation_manifest.json').write_text(json.dumps(manifest, indent=2), encoding='utf-8')
     print(f'Report generated: {len(rows)} module/sample timing rows; {passed} tests + {subtests} subtests passed; {skipped} CUDA skips.')
 

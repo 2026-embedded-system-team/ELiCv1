@@ -1,0 +1,121 @@
+{
+  "created_utc": "2026-10-20T07:52:13.140210+00:00",
+  "baseline": "frozen working-tree state before this memory-I/O experiment",
+  "environment": {
+    "python": "3.13.12",
+    "python_executable": "C:\\Users\\LinkZelda\\miniconda3\\python.exe",
+    "platform": "Windows-11-10.0.26100-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+    "logical_cpus": 22,
+    "torch": "2.12.0+cpu",
+    "torch_config": "PyTorch built with:\n  - C++ Version: 202002\n  - MSVC 194234444\n  - Intel(R) oneAPI Math Kernel Library Version 2026.0-Product Build 20260401 for Intel(R) 64 architecture applications\n  - Intel(R) MKL-DNN v3.11.2 (Git Hash 03c022d3ffdcee958cfacbe720048e725fdf644c)\n  - OpenMP 2019\n  - LAPACK is enabled (usually provided by MKL)\n  - CPU capability usage: AVX2\n  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, COMMIT_SHA=7661cd9c6b841b62b7f411aa52ec51f05457263b, CUDA_FLAGS= -DLIBCUDACXX_ENABLE_SIMPLIFIED_COMPLEX_OPERATIONS -Xcompiler /Zc:__cplusplus -Xcompiler /Zc:preprocessor -Xcompiler /w -w -Xcompiler /FS -Xfatbin -compress-all  -Xcompiler=/wd4819,/wd4503,/wd4190,/wd4244,/wd4251,/wd4275,/wd4522 -Wno-deprecated-gpu-targets --expt-extended-lambda -DCUB_WRAPPED_NAMESPACE=at_cuda_detail -DDISABLE_CUSPARSE_DEPRECATED -DCUDA_HAS_FP16=1 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__, CXX_COMPILER=C:/actions-runner/_work/pytorch/pytorch/.ci/pytorch/windows/tmp_bin/sccache-cl.exe, CXX_FLAGS=/DWIN32 /D_WINDOWS /EHsc /Zc:__cplusplus /bigobj /FS /utf-8 -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOCUPTI -DLIBKINETO_NOROCTRACER -DLIBKINETO_NOXPUPTI=ON -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE /wd4624 /wd4068 /wd4067 /wd4267 /wd4661 /wd4717 /wd4244 /wd4804 /wd4273, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, TORCH_VERSION=2.12.0, USE_CUDA=0, USE_CUDNN=OFF, USE_CUSPARSELT=OFF, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=OFF, USE_NNPACK=OFF, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, USE_XCCL=OFF, USE_XPU=OFF, \n",
+    "device": "cpu",
+    "device_name": "CPU",
+    "torch_threads": 1,
+    "interop_threads": 1
+  },
+  "settings": {
+    "seed": 11,
+    "warmup": 3,
+    "repeats": 11,
+    "posq": 16,
+    "sizes": [
+      64,
+      4096,
+      100000,
+      400000
+    ],
+    "correctness_only": true,
+    "timer": "perf_counter_ns; alternating paired order; CUDA synchronization if applicable",
+    "timed_allocation": true,
+    "excluded": [
+      "input creation",
+      "PLY reading",
+      "quantization",
+      "correctness checks"
+    ],
+    "synthetic_morton_layout": "xyz view of int32 [batch,x,y,z], row stride 4",
+    "cdf_dtype": "float32",
+    "cdf_length": 17,
+    "cdf_normalization": [
+      true,
+      false
+    ]
+  },
+  "source_files": {
+    "before_morton": {
+      "path": "benchmarks\\results\\memory_io_20261020\\before\\src\\morton.py",
+      "sha256": "dfe60e357384ea0362ade95aded39d73dbdbb35fc17dfca8f7be8ed5d71f8a9c"
+    },
+    "before_op": {
+      "path": "benchmarks\\results\\memory_io_20261020\\before\\src\\op.py",
+      "sha256": "7bcd2ca1746da3f39fbb8296fec857478d61b400fbb052bf6e2b233eb91b8dc6"
+    },
+    "after_morton": {
+      "path": "src\\morton.py",
+      "sha256": "aaa56219341a6b35715eb095b80e42ff4a3d33af7d117bda7bb785205b17ba2a"
+    },
+    "after_op": {
+      "path": "src\\op.py",
+      "sha256": "d05f9ee58d08511d4884df0fe7b7b263b8b1344f8769c3740c6f4df02eff2b5a"
+    },
+    "point_cloud_io": {
+      "path": "src\\io.py",
+      "sha256": "26c7c63daf6e6bf7c98143083c720668789c23dea4667e920a0c0efd2e4d9a18"
+    },
+    "benchmark": {
+      "path": "benchmarks\\bench_memory_io.py",
+      "sha256": "c9af1251ffbd5f24b72a12477157ff6f7a7a11a7b0e67f95e8511319f03234f4"
+    }
+  },
+  "clouds": [
+    {
+      "file": "data\\FordExample\\sample_0001.ply",
+      "source_sha256": "eeeaf871813f0e4c7dbaba567f79eb71b7add11a0df6a8cd506480baf14e7258",
+      "quantized_coords_sha256": "176779094e7eaa4a293702b132de8e9081ab32058cf33e64adf8ccd2cf5fb259",
+      "input_points": 80332,
+      "unique_voxels": 77330,
+      "prequantized": true,
+      "hierarchy_levels": 12
+    }
+  ],
+  "cases": [
+    {
+      "label": "data\\FordExample\\sample_0001.ply/morton3_code",
+      "group": "real_cloud",
+      "stage": "morton3_code",
+      "rows": 80332,
+      "file": "data\\FordExample\\sample_0001.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true
+    },
+    {
+      "label": "data\\FordExample\\sample_0001.ply/morton3_sort",
+      "group": "real_cloud",
+      "stage": "morton3_sort",
+      "rows": 80332,
+      "file": "data\\FordExample\\sample_0001.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true
+    },
+    {
+      "label": "data\\FordExample\\sample_0001.ply/down_once",
+      "group": "real_cloud",
+      "stage": "down_once",
+      "rows": 80332,
+      "file": "data\\FordExample\\sample_0001.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true
+    },
+    {
+      "label": "data\\FordExample\\sample_0001.ply/build_hierarchy",
+      "group": "real_cloud",
+      "stage": "build_hierarchy",
+      "rows": 80332,
+      "file": "data\\FordExample\\sample_0001.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true
+    }
+  ]
+}

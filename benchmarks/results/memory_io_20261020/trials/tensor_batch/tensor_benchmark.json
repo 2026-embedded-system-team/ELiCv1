@@ -1,0 +1,5028 @@
+{
+  "created_utc": "2026-10-20T07:54:47.306482+00:00",
+  "baseline": "frozen working-tree state before this memory-I/O experiment",
+  "environment": {
+    "python": "3.13.12",
+    "python_executable": "C:\\Users\\LinkZelda\\miniconda3\\python.exe",
+    "platform": "Windows-11-10.0.26100-SP0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+    "logical_cpus": 22,
+    "torch": "2.12.0+cpu",
+    "torch_config": "PyTorch built with:\n  - C++ Version: 202002\n  - MSVC 194234444\n  - Intel(R) oneAPI Math Kernel Library Version 2026.0-Product Build 20260401 for Intel(R) 64 architecture applications\n  - Intel(R) MKL-DNN v3.11.2 (Git Hash 03c022d3ffdcee958cfacbe720048e725fdf644c)\n  - OpenMP 2019\n  - LAPACK is enabled (usually provided by MKL)\n  - CPU capability usage: AVX2\n  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, COMMIT_SHA=7661cd9c6b841b62b7f411aa52ec51f05457263b, CUDA_FLAGS= -DLIBCUDACXX_ENABLE_SIMPLIFIED_COMPLEX_OPERATIONS -Xcompiler /Zc:__cplusplus -Xcompiler /Zc:preprocessor -Xcompiler /w -w -Xcompiler /FS -Xfatbin -compress-all  -Xcompiler=/wd4819,/wd4503,/wd4190,/wd4244,/wd4251,/wd4275,/wd4522 -Wno-deprecated-gpu-targets --expt-extended-lambda -DCUB_WRAPPED_NAMESPACE=at_cuda_detail -DDISABLE_CUSPARSE_DEPRECATED -DCUDA_HAS_FP16=1 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__, CXX_COMPILER=C:/actions-runner/_work/pytorch/pytorch/.ci/pytorch/windows/tmp_bin/sccache-cl.exe, CXX_FLAGS=/DWIN32 /D_WINDOWS /EHsc /Zc:__cplusplus /bigobj /FS /utf-8 -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOCUPTI -DLIBKINETO_NOROCTRACER -DLIBKINETO_NOXPUPTI=ON -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE /wd4624 /wd4068 /wd4067 /wd4267 /wd4661 /wd4717 /wd4244 /wd4804 /wd4273, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, TORCH_VERSION=2.12.0, USE_CUDA=0, USE_CUDNN=OFF, USE_CUSPARSELT=OFF, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=OFF, USE_NNPACK=OFF, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, USE_XCCL=OFF, USE_XPU=OFF, \n",
+    "device": "cpu",
+    "device_name": "CPU",
+    "torch_threads": 1,
+    "interop_threads": 1
+  },
+  "settings": {
+    "seed": 11,
+    "warmup": 3,
+    "repeats": 21,
+    "posq": 16,
+    "sizes": [
+      64,
+      4096,
+      100000,
+      400000
+    ],
+    "correctness_only": false,
+    "timer": "perf_counter_ns; alternating paired order; CUDA synchronization if applicable",
+    "timed_allocation": true,
+    "excluded": [
+      "input creation",
+      "PLY reading",
+      "quantization",
+      "correctness checks"
+    ],
+    "synthetic_morton_layout": "xyz view of int32 [batch,x,y,z], row stride 4",
+    "cdf_dtype": "float32",
+    "cdf_length": 17,
+    "cdf_normalization": [
+      true,
+      false
+    ]
+  },
+  "source_files": {
+    "before_morton": {
+      "path": "benchmarks\\results\\memory_io_20261020\\before\\src\\morton.py",
+      "sha256": "dfe60e357384ea0362ade95aded39d73dbdbb35fc17dfca8f7be8ed5d71f8a9c"
+    },
+    "before_op": {
+      "path": "benchmarks\\results\\memory_io_20261020\\before\\src\\op.py",
+      "sha256": "7bcd2ca1746da3f39fbb8296fec857478d61b400fbb052bf6e2b233eb91b8dc6"
+    },
+    "after_morton": {
+      "path": "src\\morton.py",
+      "sha256": "aaa56219341a6b35715eb095b80e42ff4a3d33af7d117bda7bb785205b17ba2a"
+    },
+    "after_op": {
+      "path": "src\\op.py",
+      "sha256": "d05f9ee58d08511d4884df0fe7b7b263b8b1344f8769c3740c6f4df02eff2b5a"
+    },
+    "point_cloud_io": {
+      "path": "src\\io.py",
+      "sha256": "26c7c63daf6e6bf7c98143083c720668789c23dea4667e920a0c0efd2e4d9a18"
+    },
+    "benchmark": {
+      "path": "benchmarks\\bench_memory_io.py",
+      "sha256": "c9af1251ffbd5f24b72a12477157ff6f7a7a11a7b0e67f95e8511319f03234f4"
+    }
+  },
+  "clouds": [
+    {
+      "file": "data\\FordExample\\sample_0001.ply",
+      "source_sha256": "eeeaf871813f0e4c7dbaba567f79eb71b7add11a0df6a8cd506480baf14e7258",
+      "quantized_coords_sha256": "176779094e7eaa4a293702b132de8e9081ab32058cf33e64adf8ccd2cf5fb259",
+      "input_points": 80332,
+      "unique_voxels": 77330,
+      "prequantized": true,
+      "hierarchy_levels": 12,
+      "total_hierarchy_before_ms": 38.927,
+      "total_hierarchy_after_ms": 39.5747,
+      "total_hierarchy_speedup": 0.9836334830080834
+    },
+    {
+      "file": "data\\FordExample\\sample_0002.ply",
+      "source_sha256": "c5b53fecced243efe5673a0b38f9b2a47d7c456b08717f9641a1dccf4823aa1f",
+      "quantized_coords_sha256": "a6251f027561ceed90432261f411d003332622ee15ed3d2fb879ded34c46f50b",
+      "input_points": 80278,
+      "unique_voxels": 77310,
+      "prequantized": true,
+      "hierarchy_levels": 12,
+      "total_hierarchy_before_ms": 30.8462,
+      "total_hierarchy_after_ms": 30.2443,
+      "total_hierarchy_speedup": 1.019901270652652
+    },
+    {
+      "file": "data\\SemanticKITTIExample\\sample_0001.ply",
+      "source_sha256": "7ffed2554cd7efba5751f9dac610bd767b7b5837c7a551adc320f1d5c7836f64",
+      "quantized_coords_sha256": "ac11e040b2db077ceff4d51df30512b27362e0d27fddb9cef86d2a23ae6a24aa",
+      "input_points": 126012,
+      "unique_voxels": 123281,
+      "prequantized": false,
+      "hierarchy_levels": 12,
+      "total_hierarchy_before_ms": 37.7628,
+      "total_hierarchy_after_ms": 38.0389,
+      "total_hierarchy_speedup": 0.9927416407940293
+    },
+    {
+      "file": "data\\SemanticKITTIExample\\sample_0002.ply",
+      "source_sha256": "433278fee4ae10ed7567a24316d38889b7dab112217adcfa0b791c61e9661393",
+      "quantized_coords_sha256": "eec9140c5602c3d339908fefffec7cc9bae6b757b3d67abd5a84e80960e30d34",
+      "input_points": 125756,
+      "unique_voxels": 122832,
+      "prequantized": false,
+      "hierarchy_levels": 12,
+      "total_hierarchy_before_ms": 53.6145,
+      "total_hierarchy_after_ms": 54.45,
+      "total_hierarchy_speedup": 0.98465564738292
+    }
+  ],
+  "cases": [
+    {
+      "label": "synthetic/64/morton3_code",
+      "group": "synthetic_morton",
+      "stage": "morton3_code",
+      "rows": 64,
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 0.3925,
+        "p10_ms": 0.2661,
+        "p90_ms": 0.4826,
+        "samples_ms": [
+          0.4826,
+          0.5045,
+          0.3925,
+          0.3978,
+          0.4164,
+          0.4403,
+          0.4306,
+          0.4211,
+          0.4242,
+          0.4189,
+          0.5725,
+          0.3699,
+          0.3269,
+          0.2661,
+          0.2877,
+          0.2969,
+          0.3229,
+          0.2471,
+          0.2978,
+          0.2456,
+          0.3804
+        ]
+      },
+      "after": {
+        "median_ms": 0.1754,
+        "p10_ms": 0.1142,
+        "p90_ms": 0.2192,
+        "samples_ms": [
+          0.2148,
+          0.1995,
+          0.2137,
+          0.1754,
+          0.1869,
+          0.1731,
+          0.1748,
+          0.163,
+          0.2192,
+          0.1861,
+          0.2355,
+          0.1869,
+          0.2049,
+          0.1492,
+          0.1196,
+          0.1142,
+          0.1231,
+          0.1092,
+          0.1165,
+          0.1062,
+          0.2374
+        ]
+      },
+      "speedup": 2.2377423033067276,
+      "paired_speedups": [
+        2.2467411545623834,
+        2.5288220551378444,
+        1.8366869443144596,
+        2.2679589509692133,
+        2.2279293739967896,
+        2.5436164067013287,
+        2.463386727688787,
+        2.583435582822086,
+        1.9352189781021898,
+        2.250940354648039,
+        2.4309978768577496,
+        1.9791332263242374,
+        1.5954123962908737,
+        1.7835120643431637,
+        2.4055183946488294,
+        2.599824868651489,
+        2.6230706742485785,
+        2.2628205128205128,
+        2.5562231759656653,
+        2.312617702448211,
+        1.6023588879528223
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "synthetic/4096/morton3_code",
+      "group": "synthetic_morton",
+      "stage": "morton3_code",
+      "rows": 4096,
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 0.3804,
+        "p10_ms": 0.3381,
+        "p90_ms": 0.5254,
+        "samples_ms": [
+          0.6576,
+          0.493,
+          0.4777,
+          0.5254,
+          0.3819,
+          0.6528,
+          0.399,
+          0.4153,
+          0.4489,
+          0.3391,
+          0.3362,
+          0.3395,
+          0.3633,
+          0.3416,
+          0.3804,
+          0.4853,
+          0.3381,
+          0.3503,
+          0.339,
+          0.3404,
+          0.3354
+        ]
+      },
+      "after": {
+        "median_ms": 0.2222,
+        "p10_ms": 0.2034,
+        "p90_ms": 0.3865,
+        "samples_ms": [
+          0.3987,
+          0.3865,
+          0.3418,
+          0.2857,
+          0.4385,
+          0.3693,
+          0.2786,
+          0.2222,
+          0.2551,
+          0.2103,
+          0.2044,
+          0.2014,
+          0.2092,
+          0.2034,
+          0.2152,
+          0.239,
+          0.208,
+          0.2033,
+          0.2044,
+          0.23,
+          0.2071
+        ]
+      },
+      "speedup": 1.711971197119712,
+      "paired_speedups": [
+        1.6493604213694506,
+        1.2755498059508408,
+        1.3976009362200117,
+        1.8389919495974798,
+        0.8709236031927025,
+        1.767668562144598,
+        1.4321608040201006,
+        1.869036903690369,
+        1.759702077616621,
+        1.6124583927722302,
+        1.6448140900195696,
+        1.685700099304866,
+        1.7366156787762907,
+        1.67944936086529,
+        1.7676579925650557,
+        2.0305439330543935,
+        1.6254807692307693,
+        1.7230693556320709,
+        1.658512720156556,
+        1.4799999999999998,
+        1.6195074843070978
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "synthetic/100000/morton3_code",
+      "group": "synthetic_morton",
+      "stage": "morton3_code",
+      "rows": 100000,
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 5.5091,
+        "p10_ms": 3.0228,
+        "p90_ms": 8.7743,
+        "samples_ms": [
+          6.7712,
+          8.1016,
+          7.5811,
+          8.7743,
+          10.579,
+          8.0776,
+          8.7047,
+          6.857,
+          5.5091,
+          4.8446,
+          3.5579,
+          6.4232,
+          2.9894,
+          2.8664,
+          3.202,
+          4.0231,
+          4.1069,
+          4.1834,
+          12.131,
+          3.0944,
+          3.0228
+        ]
+      },
+      "after": {
+        "median_ms": 5.9576,
+        "p10_ms": 3.0543,
+        "p90_ms": 9.1439,
+        "samples_ms": [
+          10.0533,
+          7.7744,
+          8.6655,
+          8.0525,
+          8.256,
+          9.5083,
+          5.6951,
+          8.6428,
+          8.2776,
+          9.1439,
+          3.0543,
+          4.6423,
+          3.0429,
+          3.2027,
+          3.0147,
+          4.1571,
+          5.8492,
+          5.9576,
+          7.3439,
+          4.039,
+          3.2821
+        ]
+      },
+      "speedup": 0.9247180072512421,
+      "paired_speedups": [
+        0.6735300846488218,
+        1.0420868491459148,
+        0.8748600773181006,
+        1.0896367587705682,
+        1.2813711240310077,
+        0.849531461985844,
+        1.5284542852627698,
+        0.7933771462951822,
+        0.6655431526046197,
+        0.5298176926694298,
+        1.1648822970893495,
+        1.3836244964780389,
+        0.9824180880081501,
+        0.8949948480969182,
+        1.0621289017149302,
+        0.9677659907146811,
+        0.702130205840115,
+        0.7021955149724721,
+        1.6518471112079414,
+        0.7661302302550136,
+        0.9209957039700193
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "synthetic/400000/morton3_code",
+      "group": "synthetic_morton",
+      "stage": "morton3_code",
+      "rows": 400000,
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 26.8319,
+        "p10_ms": 22.6827,
+        "p90_ms": 35.3406,
+        "samples_ms": [
+          30.1988,
+          28.2895,
+          22.7392,
+          31.304,
+          35.3406,
+          22.9205,
+          22.6827,
+          25.7304,
+          20.7768,
+          18.7069,
+          28.8298,
+          26.8319,
+          25.7994,
+          25.5204,
+          30.7278,
+          25.6849,
+          25.4447,
+          37.5538,
+          38.656,
+          32.9512,
+          30.0023
+        ]
+      },
+      "after": {
+        "median_ms": 22.1189,
+        "p10_ms": 18.0777,
+        "p90_ms": 29.8774,
+        "samples_ms": [
+          29.3922,
+          21.8687,
+          19.2747,
+          15.6843,
+          17.9224,
+          20.4484,
+          20.8288,
+          18.0777,
+          22.4875,
+          19.09,
+          25.107,
+          20.907,
+          21.3039,
+          22.6614,
+          29.6997,
+          25.3745,
+          24.2281,
+          22.1189,
+          31.1051,
+          29.8774,
+          32.1977
+        ]
+      },
+      "speedup": 1.213075695445976,
+      "paired_speedups": [
+        1.0274426548540088,
+        1.2936068444854976,
+        1.1797433941903117,
+        1.9958812315500212,
+        1.9718676070169174,
+        1.1208945443164258,
+        1.0890065678291596,
+        1.4233226571964352,
+        0.9239266259032797,
+        0.97993190151912,
+        1.1482773728442266,
+        1.2833931219208878,
+        1.2110177009843268,
+        1.1261616669755619,
+        1.0346165112778916,
+        1.0122327533547457,
+        1.050214420445681,
+        1.6978149907997235,
+        1.242754403618699,
+        1.1028804380568589,
+        0.9318150054196419
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "cdf/64/normalize=True",
+      "group": "cdf",
+      "stage": "convert_to_int_and_normalize",
+      "rows": 64,
+      "length": 17,
+      "needs_normalization": true,
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 0.0515,
+        "p10_ms": 0.0408,
+        "p90_ms": 0.121,
+        "samples_ms": [
+          0.0453,
+          0.0418,
+          0.0417,
+          0.0434,
+          0.0408,
+          0.0409,
+          0.0412,
+          0.047,
+          0.0387,
+          0.0394,
+          0.1813,
+          0.1102,
+          0.0976,
+          0.0963,
+          0.096,
+          0.0954,
+          0.0972,
+          0.1697,
+          0.121,
+          0.0581,
+          0.0515
+        ]
+      },
+      "after": {
+        "median_ms": 0.0722,
+        "p10_ms": 0.0453,
+        "p90_ms": 0.131,
+        "samples_ms": [
+          0.0474,
+          0.056,
+          0.0448,
+          0.0823,
+          0.0465,
+          0.0463,
+          0.0456,
+          0.0634,
+          0.0453,
+          0.0441,
+          0.2287,
+          0.131,
+          0.1079,
+          0.1035,
+          0.1048,
+          0.1035,
+          0.1029,
+          0.1491,
+          0.0879,
+          0.0722,
+          0.057
+        ]
+      },
+      "speedup": 0.7132963988919667,
+      "paired_speedups": [
+        0.9556962025316457,
+        0.7464285714285713,
+        0.9308035714285715,
+        0.5273390036452005,
+        0.8774193548387097,
+        0.8833693304535637,
+        0.9035087719298246,
+        0.7413249211356467,
+        0.8543046357615893,
+        0.8934240362811791,
+        0.7927415828596415,
+        0.8412213740458016,
+        0.9045412418906396,
+        0.9304347826086957,
+        0.916030534351145,
+        0.9217391304347826,
+        0.944606413994169,
+        1.1381623071763916,
+        1.3765642775881684,
+        0.8047091412742382,
+        0.9035087719298245
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "cdf/64/normalize=False",
+      "group": "cdf",
+      "stage": "convert_to_int_and_normalize",
+      "rows": 64,
+      "length": 17,
+      "needs_normalization": false,
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 0.027,
+        "p10_ms": 0.0261,
+        "p90_ms": 0.05,
+        "samples_ms": [
+          0.1032,
+          0.0261,
+          0.0248,
+          0.0297,
+          0.0355,
+          0.0363,
+          0.0442,
+          0.0268,
+          0.0261,
+          0.0262,
+          0.0259,
+          0.0406,
+          0.0395,
+          0.0265,
+          0.0262,
+          0.027,
+          0.0263,
+          0.0266,
+          0.3093,
+          0.05,
+          0.0446
+        ]
+      },
+      "after": {
+        "median_ms": 0.032,
+        "p10_ms": 0.0295,
+        "p90_ms": 0.0498,
+        "samples_ms": [
+          0.0491,
+          0.032,
+          0.0283,
+          0.0439,
+          0.0346,
+          0.0319,
+          0.0365,
+          0.033,
+          0.0299,
+          0.0296,
+          0.0295,
+          0.0376,
+          0.0341,
+          0.0309,
+          0.0292,
+          0.0299,
+          0.0296,
+          0.0296,
+          0.1314,
+          0.0621,
+          0.0498
+        ]
+      },
+      "speedup": 0.84375,
+      "paired_speedups": [
+        2.1018329938900204,
+        0.815625,
+        0.8763250883392226,
+        0.6765375854214123,
+        1.0260115606936415,
+        1.1379310344827587,
+        1.2109589041095892,
+        0.8121212121212121,
+        0.8729096989966556,
+        0.8851351351351351,
+        0.8779661016949153,
+        1.0797872340425532,
+        1.1583577712609971,
+        0.8576051779935274,
+        0.8972602739726028,
+        0.903010033444816,
+        0.8885135135135135,
+        0.8986486486486486,
+        2.3538812785388132,
+        0.8051529790660226,
+        0.8955823293172691
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "cdf/4096/normalize=True",
+      "group": "cdf",
+      "stage": "convert_to_int_and_normalize",
+      "rows": 4096,
+      "length": 17,
+      "needs_normalization": true,
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 0.6653,
+        "p10_ms": 0.3706,
+        "p90_ms": 0.7268,
+        "samples_ms": [
+          0.6928,
+          0.6954,
+          0.7242,
+          0.7015,
+          0.6653,
+          0.6707,
+          0.6783,
+          0.7268,
+          0.7453,
+          0.6923,
+          0.6599,
+          1.0055,
+          0.6037,
+          0.6139,
+          0.4501,
+          0.4275,
+          0.4079,
+          0.3706,
+          0.3659,
+          0.3777,
+          0.3665
+        ]
+      },
+      "after": {
+        "median_ms": 0.6658,
+        "p10_ms": 0.3792,
+        "p90_ms": 0.8377,
+        "samples_ms": [
+          0.7553,
+          0.694,
+          0.6658,
+          0.655,
+          0.682,
+          0.6725,
+          0.6909,
+          0.6714,
+          0.8377,
+          0.9517,
+          0.7835,
+          0.9796,
+          0.5916,
+          0.5389,
+          0.487,
+          0.4584,
+          0.4138,
+          0.4006,
+          0.3792,
+          0.3784,
+          0.3547
+        ]
+      },
+      "speedup": 0.9992490237308502,
+      "paired_speedups": [
+        0.9172514232755197,
+        1.0020172910662826,
+        1.0877140282367077,
+        1.0709923664122136,
+        0.9755131964809384,
+        0.9973234200743494,
+        0.9817629179331308,
+        1.0825141495382782,
+        0.8896979825713262,
+        0.7274351161080173,
+        0.8422463305679644,
+        1.0264393630053084,
+        1.0204530087897228,
+        1.1391723881981815,
+        0.9242299794661191,
+        0.9325916230366492,
+        0.9857419043015949,
+        0.9251123315027459,
+        0.9649261603375529,
+        0.9981501057082451,
+        1.0332675500422892
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "cdf/4096/normalize=False",
+      "group": "cdf",
+      "stage": "convert_to_int_and_normalize",
+      "rows": 4096,
+      "length": 17,
+      "needs_normalization": false,
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 0.188,
+        "p10_ms": 0.1243,
+        "p90_ms": 0.398,
+        "samples_ms": [
+          0.1304,
+          0.1342,
+          0.1307,
+          0.1552,
+          0.2915,
+          0.188,
+          0.1775,
+          0.1243,
+          0.1257,
+          0.1291,
+          0.1144,
+          0.122,
+          0.329,
+          0.3152,
+          0.292,
+          0.2704,
+          0.5751,
+          0.398,
+          0.5948,
+          0.3268,
+          0.3931
+        ]
+      },
+      "after": {
+        "median_ms": 0.2283,
+        "p10_ms": 0.1331,
+        "p90_ms": 0.4112,
+        "samples_ms": [
+          0.1382,
+          0.1371,
+          0.1406,
+          0.127,
+          0.3856,
+          0.2283,
+          0.1804,
+          0.1339,
+          0.1963,
+          0.1285,
+          0.1331,
+          0.1346,
+          0.4112,
+          0.33,
+          0.35,
+          0.2819,
+          0.4073,
+          0.4547,
+          0.4086,
+          0.332,
+          0.729
+        ]
+      },
+      "speedup": 0.8234778799824792,
+      "paired_speedups": [
+        0.94356005788712,
+        0.9788475565280818,
+        0.9295874822190612,
+        1.2220472440944883,
+        0.7559647302904564,
+        0.8234778799824792,
+        0.9839246119733924,
+        0.9283047050037342,
+        0.6403464085583291,
+        1.004669260700389,
+        0.859504132231405,
+        0.9063893016344725,
+        0.8000972762645915,
+        0.9551515151515151,
+        0.8342857142857143,
+        0.9592053919829726,
+        1.411981340535232,
+        0.8753023971849572,
+        1.4557023984336759,
+        0.9843373493975902,
+        0.5392318244170097
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "cdf/100000/normalize=True",
+      "group": "cdf",
+      "stage": "convert_to_int_and_normalize",
+      "rows": 100000,
+      "length": 17,
+      "needs_normalization": true,
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 11.5681,
+        "p10_ms": 9.2097,
+        "p90_ms": 15.6901,
+        "samples_ms": [
+          11.6004,
+          11.451,
+          9.9791,
+          8.6707,
+          9.0983,
+          11.6263,
+          11.0405,
+          9.5783,
+          14.4489,
+          12.6785,
+          14.6606,
+          15.6901,
+          18.0241,
+          12.9538,
+          11.5681,
+          9.8421,
+          9.2097,
+          12.7483,
+          16.521,
+          10.4486,
+          11.1115
+        ]
+      },
+      "after": {
+        "median_ms": 12.0732,
+        "p10_ms": 9.2776,
+        "p90_ms": 15.9157,
+        "samples_ms": [
+          12.0732,
+          9.9052,
+          8.6292,
+          9.2776,
+          8.4769,
+          10.0966,
+          13.8505,
+          10.7942,
+          14.5988,
+          14.56,
+          17.3534,
+          16.0601,
+          15.3232,
+          12.557,
+          10.4444,
+          10.08,
+          11.5756,
+          9.3027,
+          15.1142,
+          15.9157,
+          14.5062
+        ]
+      },
+      "speedup": 0.9581635357651658,
+      "paired_speedups": [
+        0.9608388828148295,
+        1.1560594435246132,
+        1.1564339683864089,
+        0.9345843752694662,
+        1.0733050997416507,
+        1.1515064477150725,
+        0.7971192375726508,
+        0.8873561727594449,
+        0.9897320327698167,
+        0.8707760989010989,
+        0.8448257978263626,
+        0.9769615382220534,
+        1.1762621384567193,
+        1.0315999044357729,
+        1.1075887556968327,
+        0.9763988095238095,
+        0.7956131863575107,
+        1.3703870919195502,
+        1.0930780325786347,
+        0.6564964154891083,
+        0.7659828211385477
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "cdf/100000/normalize=False",
+      "group": "cdf",
+      "stage": "convert_to_int_and_normalize",
+      "rows": 100000,
+      "length": 17,
+      "needs_normalization": false,
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 6.3938,
+        "p10_ms": 3.464,
+        "p90_ms": 7.9004,
+        "samples_ms": [
+          7.9058,
+          7.7063,
+          6.3938,
+          3.464,
+          3.2873,
+          8.0311,
+          6.0928,
+          7.5584,
+          4.7139,
+          7.4881,
+          6.8136,
+          3.8578,
+          3.3817,
+          4.0538,
+          6.848,
+          4.147,
+          6.557,
+          5.8895,
+          7.9004,
+          7.3266,
+          4.4102
+        ]
+      },
+      "after": {
+        "median_ms": 5.3855,
+        "p10_ms": 3.2817,
+        "p90_ms": 8.4304,
+        "samples_ms": [
+          8.6503,
+          8.3522,
+          4.8414,
+          5.7764,
+          3.1902,
+          7.6208,
+          3.272,
+          4.2346,
+          7.5969,
+          6.1694,
+          3.7158,
+          3.4172,
+          5.3855,
+          3.867,
+          4.5097,
+          3.2817,
+          4.7905,
+          7.5572,
+          8.3568,
+          8.6954,
+          8.4304
+        ]
+      },
+      "speedup": 1.187224955900102,
+      "paired_speedups": [
+        0.9139336207992786,
+        0.9226670817269701,
+        1.3206510513487832,
+        0.5996814625025968,
+        1.0304369631997994,
+        1.0538394919168592,
+        1.8621026894865529,
+        1.7849147499173474,
+        0.6205030999486633,
+        1.2137485006645703,
+        1.8336831906991764,
+        1.1289359709703852,
+        0.6279268405904743,
+        1.048306180501681,
+        1.518504556844136,
+        1.2636743151415426,
+        1.368750652332742,
+        0.7793230296935373,
+        0.9453857936052078,
+        0.8425834349196127,
+        0.5231305750616815
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "cdf/400000/normalize=True",
+      "group": "cdf",
+      "stage": "convert_to_int_and_normalize",
+      "rows": 400000,
+      "length": 17,
+      "needs_normalization": true,
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 53.5822,
+        "p10_ms": 45.2003,
+        "p90_ms": 61.8648,
+        "samples_ms": [
+          45.3771,
+          44.7646,
+          54.6834,
+          51.1471,
+          53.5822,
+          53.8726,
+          63.331,
+          47.1591,
+          46.7761,
+          41.9402,
+          61.8648,
+          53.3515,
+          54.2233,
+          45.2003,
+          67.3823,
+          51.162,
+          59.914,
+          56.9928,
+          58.2456,
+          48.7661,
+          58.8532
+        ]
+      },
+      "after": {
+        "median_ms": 52.8255,
+        "p10_ms": 45.8696,
+        "p90_ms": 57.5091,
+        "samples_ms": [
+          49.7825,
+          52.8255,
+          55.1731,
+          63.137,
+          47.7364,
+          64.2393,
+          52.6325,
+          46.3525,
+          44.3361,
+          45.8696,
+          57.5091,
+          49.9377,
+          44.0612,
+          54.7121,
+          55.7665,
+          54.2157,
+          50.0607,
+          53.9686,
+          53.2947,
+          48.1761,
+          55.4342
+        ]
+      },
+      "speedup": 1.0143245213012655,
+      "paired_speedups": [
+        0.9115070556922613,
+        0.8474051357772289,
+        0.991124297891545,
+        0.810097090454092,
+        1.1224600095524588,
+        0.838623708539788,
+        1.203267942811001,
+        1.0174014346583249,
+        1.0550341595223756,
+        0.9143354204091598,
+        1.0757393177775345,
+        1.0683611780278226,
+        1.2306360244387353,
+        0.8261481463880933,
+        1.2082935095442604,
+        0.943674987134723,
+        1.196827051958922,
+        1.0560362877673313,
+        1.092896667023175,
+        1.0122467364523073,
+        1.0616767266416762
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "cdf/400000/normalize=False",
+      "group": "cdf",
+      "stage": "convert_to_int_and_normalize",
+      "rows": 400000,
+      "length": 17,
+      "needs_normalization": false,
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 15.9192,
+        "p10_ms": 12.6905,
+        "p90_ms": 21.4558,
+        "samples_ms": [
+          14.8881,
+          19.9075,
+          21.1603,
+          18.8086,
+          13.5185,
+          23.7339,
+          27.9256,
+          18.9772,
+          19.0913,
+          18.2506,
+          15.2691,
+          14.2281,
+          21.4558,
+          16.2182,
+          15.9192,
+          13.675,
+          12.6905,
+          14.0769,
+          13.8948,
+          12.6308,
+          12.5918
+        ]
+      },
+      "after": {
+        "median_ms": 14.7363,
+        "p10_ms": 11.2608,
+        "p90_ms": 21.3102,
+        "samples_ms": [
+          14.0209,
+          14.8148,
+          26.1234,
+          21.9125,
+          11.5408,
+          16.0845,
+          21.3102,
+          20.6712,
+          17.6381,
+          17.288,
+          17.5931,
+          17.0228,
+          14.7363,
+          13.7246,
+          13.1091,
+          11.2608,
+          11.1937,
+          11.0116,
+          11.8806,
+          11.3138,
+          12.7458
+        ]
+      },
+      "speedup": 1.0802711671179333,
+      "paired_speedups": [
+        1.0618505231475868,
+        1.3437575937575936,
+        0.8100132448303053,
+        0.8583502567027951,
+        1.1713659365035352,
+        1.4755758649631634,
+        1.3104335013280026,
+        0.9180502341421882,
+        1.0823898265686214,
+        1.0556802406293382,
+        0.8679027573309991,
+        0.8358260685668633,
+        1.45598284508323,
+        1.181688355216181,
+        1.2143625420509416,
+        1.214389741403808,
+        1.1337180735592343,
+        1.2783700824584985,
+        1.1695368920761577,
+        1.116406512400785,
+        0.9879175885389697
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\FordExample\\sample_0001.ply/morton3_code",
+      "group": "real_cloud",
+      "stage": "morton3_code",
+      "rows": 80332,
+      "file": "data\\FordExample\\sample_0001.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 2.956,
+        "p10_ms": 2.4816,
+        "p90_ms": 6.425,
+        "samples_ms": [
+          2.8327,
+          7.2237,
+          3.8049,
+          5.4821,
+          3.7903,
+          2.4634,
+          7.1835,
+          2.8054,
+          5.0056,
+          5.0809,
+          3.4083,
+          2.956,
+          2.6779,
+          2.9645,
+          2.4816,
+          2.4548,
+          2.4939,
+          2.8178,
+          2.7958,
+          6.425,
+          2.8154
+        ]
+      },
+      "after": {
+        "median_ms": 3.1441,
+        "p10_ms": 2.6871,
+        "p90_ms": 6.451,
+        "samples_ms": [
+          5.2265,
+          3.0604,
+          3.0635,
+          2.8032,
+          2.845,
+          2.6871,
+          4.5547,
+          3.1441,
+          4.5114,
+          6.9999,
+          7.884,
+          4.9573,
+          2.9083,
+          2.8153,
+          2.6423,
+          2.6505,
+          3.71,
+          6.451,
+          2.9618,
+          4.7084,
+          3.2075
+        ]
+      },
+      "speedup": 0.9401736585986451,
+      "paired_speedups": [
+        0.5419879460441979,
+        2.360377728401516,
+        1.2420107719928186,
+        1.9556578196347032,
+        1.3322671353251316,
+        0.9167504000595438,
+        1.577162052385448,
+        0.8922744187525843,
+        1.1095447089595247,
+        0.7258532264746639,
+        0.43230593607305934,
+        0.5962923365541726,
+        0.9207784616442596,
+        1.052996128298938,
+        0.9391817734549445,
+        0.9261648745519714,
+        0.6722102425876011,
+        0.4368004960471245,
+        0.9439530015531095,
+        1.3645824483901112,
+        0.8777552611067809
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\FordExample\\sample_0001.ply/morton3_sort",
+      "group": "real_cloud",
+      "stage": "morton3_sort",
+      "rows": 80332,
+      "file": "data\\FordExample\\sample_0001.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 17.1844,
+        "p10_ms": 16.4629,
+        "p90_ms": 20.7771,
+        "samples_ms": [
+          20.7771,
+          20.8064,
+          16.8537,
+          16.9902,
+          19.4195,
+          17.3136,
+          16.6642,
+          17.9113,
+          18.1456,
+          20.5812,
+          16.8866,
+          17.6065,
+          17.1784,
+          20.0242,
+          16.3794,
+          16.4629,
+          17.0583,
+          16.6225,
+          16.4253,
+          17.1844,
+          20.9827
+        ]
+      },
+      "after": {
+        "median_ms": 17.5132,
+        "p10_ms": 16.8714,
+        "p90_ms": 20.1883,
+        "samples_ms": [
+          18.0467,
+          18.2853,
+          17.4357,
+          17.5132,
+          17.1654,
+          20.087,
+          18.0517,
+          17.0899,
+          20.1883,
+          18.3586,
+          20.4963,
+          18.0427,
+          18.8299,
+          16.8969,
+          16.7069,
+          16.8069,
+          17.0673,
+          16.8714,
+          20.3495,
+          17.2243,
+          16.9113
+        ]
+      },
+      "speedup": 0.9812255898408058,
+      "paired_speedups": [
+        1.1512963588910992,
+        1.1378757799981407,
+        0.9666202102582632,
+        0.9701368110910628,
+        1.1313164854882494,
+        0.8619306018818141,
+        0.9231374330395475,
+        1.048063476088216,
+        0.8988176319947693,
+        1.1210658764829562,
+        0.8238852866127058,
+        0.9758240174696692,
+        0.9122937455854785,
+        1.1850812871000007,
+        0.980397320867426,
+        0.9795322159351221,
+        0.9994726758186707,
+        0.9852472231113006,
+        0.8071598810781592,
+        0.9976835052803308,
+        1.24075026757257
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\FordExample\\sample_0001.ply/down_once",
+      "group": "real_cloud",
+      "stage": "down_once",
+      "rows": 80332,
+      "file": "data\\FordExample\\sample_0001.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 4.4408,
+        "p10_ms": 3.6188,
+        "p90_ms": 6.2319,
+        "samples_ms": [
+          3.777,
+          5.8119,
+          5.5192,
+          4.2049,
+          3.763,
+          3.5858,
+          3.5695,
+          3.6309,
+          3.6188,
+          4.6922,
+          5.7682,
+          4.0517,
+          4.1017,
+          4.0835,
+          4.4408,
+          6.8215,
+          6.4503,
+          6.2319,
+          5.9959,
+          5.4225,
+          5.7581
+        ]
+      },
+      "after": {
+        "median_ms": 4.117,
+        "p10_ms": 3.6739,
+        "p90_ms": 5.9198,
+        "samples_ms": [
+          4.117,
+          4.2173,
+          3.8701,
+          4.4518,
+          3.9932,
+          3.9071,
+          3.5877,
+          3.7514,
+          3.8364,
+          3.6288,
+          5.5935,
+          4.0965,
+          3.9495,
+          4.2818,
+          3.6739,
+          6.9623,
+          5.2688,
+          4.8167,
+          6.2906,
+          5.499,
+          5.9198
+        ]
+      },
+      "speedup": 1.0786495020646103,
+      "paired_speedups": [
+        0.9174155938790381,
+        1.378109216797477,
+        1.4261130203353918,
+        0.9445392874792219,
+        0.9423519983972753,
+        0.9177650943154769,
+        0.9949271120773755,
+        0.9678786586341099,
+        0.9432801584819102,
+        1.293044532627866,
+        1.031232680790203,
+        0.9890638349810815,
+        1.0385365236105837,
+        0.9536877014339764,
+        1.2087427529328507,
+        0.9797767978972467,
+        1.2242446097783177,
+        1.2938111154940106,
+        0.9531523225129558,
+        0.9860883797054011,
+        0.9726848880029729
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\FordExample\\sample_0001.ply/build_hierarchy",
+      "group": "real_cloud",
+      "stage": "build_hierarchy",
+      "rows": 80332,
+      "file": "data\\FordExample\\sample_0001.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 38.927,
+        "p10_ms": 34.8822,
+        "p90_ms": 46.0159,
+        "samples_ms": [
+          52.6375,
+          39.0931,
+          43.0499,
+          46.0159,
+          45.0313,
+          43.0426,
+          35.032,
+          43.3616,
+          34.8787,
+          41.9972,
+          36.2229,
+          39.6553,
+          38.1698,
+          34.8822,
+          46.9453,
+          36.7231,
+          38.4678,
+          33.6929,
+          36.6871,
+          38.927,
+          37.4
+        ]
+      },
+      "after": {
+        "median_ms": 39.5747,
+        "p10_ms": 35.5602,
+        "p90_ms": 45.4141,
+        "samples_ms": [
+          42.0009,
+          41.0134,
+          38.8823,
+          37.2058,
+          37.4182,
+          39.5747,
+          44.0099,
+          37.4448,
+          46.6749,
+          35.7762,
+          37.6185,
+          45.4141,
+          39.0061,
+          41.4088,
+          39.8147,
+          35.268,
+          40.693,
+          35.3247,
+          44.4228,
+          35.5602,
+          49.5823
+        ]
+      },
+      "speedup": 0.9836334830080834,
+      "paired_speedups": [
+        1.253246954231933,
+        0.9531787171997446,
+        1.1071850173472249,
+        1.2367937257094324,
+        1.20345981367356,
+        1.0876292176567353,
+        0.7960027175703648,
+        1.158013929838055,
+        0.7472688747056769,
+        1.1738865502764406,
+        0.9629012321065434,
+        0.8731935676364829,
+        0.9785597637292628,
+        0.8423861594636888,
+        1.1790946559938917,
+        1.0412583645230804,
+        0.9453173764529526,
+        0.9538056940327873,
+        0.8258619447671015,
+        1.0946788825709641,
+        0.7543014341811494
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\FordExample\\sample_0002.ply/morton3_code",
+      "group": "real_cloud",
+      "stage": "morton3_code",
+      "rows": 80278,
+      "file": "data\\FordExample\\sample_0002.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 2.6954,
+        "p10_ms": 2.1352,
+        "p90_ms": 3.5577,
+        "samples_ms": [
+          2.6383,
+          2.6954,
+          3.0337,
+          3.2751,
+          3.2244,
+          3.5577,
+          2.9863,
+          3.9408,
+          3.506,
+          2.1865,
+          2.1352,
+          2.2469,
+          2.1833,
+          3.0379,
+          3.2818,
+          2.0947,
+          2.0694,
+          2.6948,
+          2.5504,
+          2.2699,
+          4.6173
+        ]
+      },
+      "after": {
+        "median_ms": 2.9762,
+        "p10_ms": 2.2722,
+        "p90_ms": 3.5594,
+        "samples_ms": [
+          2.5392,
+          2.3338,
+          2.9762,
+          3.5834,
+          3.4999,
+          3.4291,
+          3.3772,
+          3.332,
+          3.4943,
+          3.2548,
+          3.5594,
+          2.7615,
+          2.3068,
+          2.2722,
+          3.4088,
+          2.2457,
+          2.2754,
+          4.0753,
+          2.7404,
+          2.4147,
+          2.2469
+        ]
+      },
+      "speedup": 0.9056515019151938,
+      "paired_speedups": [
+        1.0390280403276622,
+        1.1549404404833317,
+        1.019319938176198,
+        0.9139643913601607,
+        0.9212834652418641,
+        1.0375025516899479,
+        0.884253227525761,
+        1.1827130852340937,
+        1.0033483101050282,
+        0.6717770677153743,
+        0.5998763836601675,
+        0.8136520007242442,
+        0.9464626322177909,
+        1.336986180793944,
+        0.962743487444262,
+        0.9327603865164538,
+        0.9094664674342973,
+        0.6612519323730768,
+        0.9306670559042474,
+        0.940033958669814,
+        2.0549646179180203
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\FordExample\\sample_0002.ply/morton3_sort",
+      "group": "real_cloud",
+      "stage": "morton3_sort",
+      "rows": 80278,
+      "file": "data\\FordExample\\sample_0002.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 16.2443,
+        "p10_ms": 15.0541,
+        "p90_ms": 18.7717,
+        "samples_ms": [
+          17.227,
+          15.3754,
+          15.6794,
+          17.5631,
+          16.2443,
+          15.9564,
+          15.0523,
+          15.5268,
+          15.5181,
+          16.7237,
+          16.3954,
+          15.9872,
+          15.9343,
+          15.0541,
+          14.5767,
+          18.3913,
+          16.9235,
+          24.0169,
+          17.9998,
+          18.8215,
+          18.7717
+        ]
+      },
+      "after": {
+        "median_ms": 16.0263,
+        "p10_ms": 15.6397,
+        "p90_ms": 19.9288,
+        "samples_ms": [
+          15.9029,
+          16.17,
+          17.9071,
+          15.9516,
+          15.866,
+          15.6945,
+          16.0263,
+          15.863,
+          16.8398,
+          19.8248,
+          15.5121,
+          15.6397,
+          15.8321,
+          15.5169,
+          17.5266,
+          16.1265,
+          15.7127,
+          16.7587,
+          20.8171,
+          28.5021,
+          19.9288
+        ]
+      },
+      "speedup": 1.013602640659416,
+      "paired_speedups": [
+        1.0832615434920674,
+        0.9508596165739023,
+        0.8755968303075317,
+        1.1010243486546805,
+        1.0238434387999495,
+        1.0166873745579663,
+        0.9392248990721502,
+        0.9788060266027864,
+        0.9215133196356251,
+        0.8435747144990114,
+        1.0569426447740795,
+        1.0222190962742252,
+        1.0064552396713007,
+        0.97017445494912,
+        0.8316901167368458,
+        1.140439649024897,
+        1.0770586850127604,
+        1.4331004194836114,
+        0.8646641463027992,
+        0.6603548510460633,
+        0.9419383003492433
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\FordExample\\sample_0002.ply/down_once",
+      "group": "real_cloud",
+      "stage": "down_once",
+      "rows": 80278,
+      "file": "data\\FordExample\\sample_0002.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 3.8063,
+        "p10_ms": 3.3253,
+        "p90_ms": 4.8674,
+        "samples_ms": [
+          4.2125,
+          3.7031,
+          3.9717,
+          3.6026,
+          3.4741,
+          3.8904,
+          3.4431,
+          3.2624,
+          3.7222,
+          3.7867,
+          3.7083,
+          4.2812,
+          4.8674,
+          4.9056,
+          4.8169,
+          3.3253,
+          3.8114,
+          3.2106,
+          4.4194,
+          4.9058,
+          3.8063
+        ]
+      },
+      "after": {
+        "median_ms": 3.7852,
+        "p10_ms": 3.3274,
+        "p90_ms": 5.271,
+        "samples_ms": [
+          3.6988,
+          4.2681,
+          3.5266,
+          3.8827,
+          3.6886,
+          3.2288,
+          3.2288,
+          3.3274,
+          3.7852,
+          4.104,
+          3.4896,
+          4.4957,
+          3.6757,
+          4.5495,
+          5.1387,
+          4.2328,
+          6.034,
+          3.6822,
+          5.3123,
+          5.271,
+          3.4377
+        ]
+      },
+      "speedup": 1.005574342174786,
+      "paired_speedups": [
+        1.1388828809343572,
+        0.8676225955343128,
+        1.1262122157318664,
+        0.927859479228372,
+        0.9418478555549531,
+        1.2049058473736372,
+        1.066371407333994,
+        0.9804652281060288,
+        0.9833562295255204,
+        0.9226851851851852,
+        1.062671939477304,
+        0.9522877416197699,
+        1.3242103544903012,
+        1.0782723376195185,
+        0.9373771576468758,
+        0.7856029106029105,
+        0.6316539608882996,
+        0.8719243930259084,
+        0.8319183781036464,
+        0.9307152343008918,
+        1.1072228524885823
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\FordExample\\sample_0002.ply/build_hierarchy",
+      "group": "real_cloud",
+      "stage": "build_hierarchy",
+      "rows": 80278,
+      "file": "data\\FordExample\\sample_0002.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 30.8462,
+        "p10_ms": 25.8047,
+        "p90_ms": 38.6467,
+        "samples_ms": [
+          41.6143,
+          32.2419,
+          37.7056,
+          30.6033,
+          33.4409,
+          32.5042,
+          38.6467,
+          30.9715,
+          32.1702,
+          30.8752,
+          30.8462,
+          40.9213,
+          29.5195,
+          25.6319,
+          30.6823,
+          30.4189,
+          27.2462,
+          26.2707,
+          25.8047,
+          30.8134,
+          25.6711
+        ]
+      },
+      "after": {
+        "median_ms": 30.2443,
+        "p10_ms": 28.0348,
+        "p90_ms": 36.0108,
+        "samples_ms": [
+          32.9979,
+          32.2276,
+          46.0181,
+          36.0108,
+          32.3196,
+          30.1822,
+          40.2833,
+          32.5345,
+          34.4385,
+          33.0597,
+          29.9233,
+          29.9413,
+          29.4169,
+          30.2443,
+          28.6421,
+          28.4187,
+          33.4852,
+          27.2851,
+          28.0794,
+          26.9843,
+          28.0348
+        ]
+      },
+      "speedup": 1.019901270652652,
+      "paired_speedups": [
+        1.2611196470078399,
+        1.0004437190482691,
+        0.8193645543818627,
+        0.849836715651971,
+        1.0346941175014541,
+        1.0769327616939783,
+        0.9593727425508836,
+        0.9519586900059935,
+        0.9341347619669848,
+        0.9339225703802515,
+        1.030842186523545,
+        1.366717543994416,
+        1.003487791031686,
+        0.8474952305062442,
+        1.0712308105900057,
+        1.0703832335750756,
+        0.8136788790271524,
+        0.9628221996620867,
+        0.9189904342685385,
+        1.141901031340446,
+        0.9156869319559975
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\SemanticKITTIExample\\sample_0001.ply/morton3_code",
+      "group": "real_cloud",
+      "stage": "morton3_code",
+      "rows": 126012,
+      "file": "data\\SemanticKITTIExample\\sample_0001.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 2.8326,
+        "p10_ms": 2.576,
+        "p90_ms": 3.7502,
+        "samples_ms": [
+          4.2868,
+          3.0645,
+          3.1941,
+          2.7118,
+          2.6739,
+          3.8766,
+          2.879,
+          2.4804,
+          2.7699,
+          3.0114,
+          3.7502,
+          2.8038,
+          2.8326,
+          2.576,
+          2.6202,
+          2.5734,
+          2.6607,
+          2.7837,
+          3.4807,
+          3.0843,
+          3.4039
+        ]
+      },
+      "after": {
+        "median_ms": 2.5599,
+        "p10_ms": 2.3252,
+        "p90_ms": 3.2549,
+        "samples_ms": [
+          4.5949,
+          5.6689,
+          2.7886,
+          2.5669,
+          2.4649,
+          2.9661,
+          2.6516,
+          2.5339,
+          2.4357,
+          2.3432,
+          2.9401,
+          3.2549,
+          2.4517,
+          2.3692,
+          2.5599,
+          2.3252,
+          2.3064,
+          2.2553,
+          2.9665,
+          2.8312,
+          2.4903
+        ]
+      },
+      "speedup": 1.1065275987343255,
+      "paired_speedups": [
+        0.9329473982023548,
+        0.5405810651096332,
+        1.1454134691242916,
+        1.0564494136896647,
+        1.0847904580307517,
+        1.3069687468392839,
+        1.0857595414089605,
+        0.978886301748293,
+        1.137209015888656,
+        1.2851655855240698,
+        1.2755348457535458,
+        0.8614089526559955,
+        1.1553615858383977,
+        1.0872868478811413,
+        1.0235556076409236,
+        1.1067435059349733,
+        1.1536160249739853,
+        1.2342925553141488,
+        1.1733355806505985,
+        1.0893967222379202,
+        1.3668634301088223
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\SemanticKITTIExample\\sample_0001.ply/morton3_sort",
+      "group": "real_cloud",
+      "stage": "morton3_sort",
+      "rows": 126012,
+      "file": "data\\SemanticKITTIExample\\sample_0001.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 17.8361,
+        "p10_ms": 17.0044,
+        "p90_ms": 22.1439,
+        "samples_ms": [
+          22.1371,
+          22.2972,
+          22.3848,
+          22.1439,
+          19.4484,
+          20.58,
+          20.5851,
+          17.2374,
+          17.0044,
+          17.9167,
+          17.8361,
+          16.5878,
+          16.5216,
+          17.6126,
+          17.4155,
+          17.3176,
+          20.2403,
+          17.9319,
+          17.2295,
+          17.6833,
+          17.3814
+        ]
+      },
+      "after": {
+        "median_ms": 18.0776,
+        "p10_ms": 17.1913,
+        "p90_ms": 21.4371,
+        "samples_ms": [
+          21.274,
+          23.5677,
+          17.3817,
+          20.0034,
+          17.2522,
+          20.0888,
+          16.8812,
+          19.9237,
+          17.1913,
+          18.0305,
+          21.4371,
+          19.4664,
+          20.3513,
+          17.7509,
+          17.5338,
+          22.2447,
+          17.433,
+          17.8549,
+          16.0094,
+          18.5937,
+          18.0776
+        ]
+      },
+      "speedup": 0.9866409257866088,
+      "paired_speedups": [
+        1.0405706496192535,
+        0.9460914726511285,
+        1.2878372080981721,
+        1.1070068088424967,
+        1.1272997067040726,
+        1.0244514356258214,
+        1.2194097576001706,
+        0.8651706259379534,
+        0.9891282218331366,
+        0.9936884723108066,
+        0.8320201892979926,
+        0.8521246866395431,
+        0.8118203751111723,
+        0.9922088457486662,
+        0.9932530312881408,
+        0.7785045426551043,
+        1.161033671771927,
+        1.0043125416552319,
+        1.0762114757579924,
+        0.9510371792596417,
+        0.9614882506527415
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\SemanticKITTIExample\\sample_0001.ply/down_once",
+      "group": "real_cloud",
+      "stage": "down_once",
+      "rows": 126012,
+      "file": "data\\SemanticKITTIExample\\sample_0001.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 4.2329,
+        "p10_ms": 4.1331,
+        "p90_ms": 5.3802,
+        "samples_ms": [
+          5.6504,
+          4.2235,
+          5.3802,
+          4.5076,
+          4.471,
+          4.9335,
+          4.3836,
+          6.5074,
+          4.2329,
+          4.4526,
+          3.9996,
+          4.1862,
+          4.1707,
+          4.0585,
+          4.1331,
+          4.1605,
+          4.2046,
+          4.9231,
+          4.2172,
+          4.4329,
+          4.1733
+        ]
+      },
+      "after": {
+        "median_ms": 4.2164,
+        "p10_ms": 4.0832,
+        "p90_ms": 5.1482,
+        "samples_ms": [
+          4.4467,
+          3.9834,
+          4.6835,
+          4.1787,
+          4.2194,
+          4.1057,
+          4.1908,
+          4.1074,
+          4.6346,
+          5.2451,
+          4.1063,
+          4.7594,
+          4.0832,
+          5.1482,
+          4.136,
+          4.2127,
+          3.9572,
+          6.7875,
+          4.3713,
+          4.2164,
+          4.5312
+        ]
+      },
+      "speedup": 1.003913290959112,
+      "paired_speedups": [
+        1.2706951222254708,
+        1.0602751418386303,
+        1.1487562720187894,
+        1.0787086893052864,
+        1.0596293311845286,
+        1.201622135080498,
+        1.0460055359358595,
+        1.5843112431221695,
+        0.9133258533638287,
+        0.8489065985395894,
+        0.9740155371015269,
+        0.8795646510064294,
+        1.0214292711598747,
+        0.7883337865661786,
+        0.9992988394584138,
+        0.9876088969069717,
+        1.0625189527949055,
+        0.7253186003683242,
+        0.9647473291698122,
+        1.0513471207665306,
+        0.9210143008474576
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\SemanticKITTIExample\\sample_0001.ply/build_hierarchy",
+      "group": "real_cloud",
+      "stage": "build_hierarchy",
+      "rows": 126012,
+      "file": "data\\SemanticKITTIExample\\sample_0001.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 37.7628,
+        "p10_ms": 32.6923,
+        "p90_ms": 45.6628,
+        "samples_ms": [
+          34.4224,
+          30.9218,
+          42.9621,
+          33.4259,
+          34.3864,
+          44.6181,
+          37.7628,
+          49.3449,
+          45.6628,
+          45.9945,
+          45.0573,
+          44.3992,
+          39.5047,
+          44.1783,
+          36.8038,
+          45.223,
+          36.8963,
+          32.0153,
+          33.1823,
+          32.6923,
+          34.6889
+        ]
+      },
+      "after": {
+        "median_ms": 38.0389,
+        "p10_ms": 32.7085,
+        "p90_ms": 46.2383,
+        "samples_ms": [
+          29.7702,
+          33.938,
+          37.5991,
+          41.7776,
+          42.3953,
+          40.2092,
+          36.4278,
+          38.8579,
+          47.3479,
+          46.2383,
+          43.3839,
+          45.0042,
+          39.9889,
+          37.1763,
+          49.8107,
+          35.9293,
+          38.0389,
+          37.2336,
+          32.7085,
+          35.0441,
+          32.4317
+        ]
+      },
+      "speedup": 0.9927416407940293,
+      "paired_speedups": [
+        1.1562703643240557,
+        0.9111261712534622,
+        1.142636392892383,
+        0.8000914365593045,
+        0.8110899085511838,
+        1.1096490355441042,
+        1.0366478348953272,
+        1.2698807707055708,
+        0.964410248395388,
+        0.9947273148017985,
+        1.0385719126219635,
+        0.9865568102532654,
+        0.9878916399300806,
+        1.1883458009538335,
+        0.7388733745962214,
+        1.2586663252554322,
+        0.969962328037877,
+        0.8598497056422156,
+        1.014485531283917,
+        0.932890272542311,
+        1.0695985717677456
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\SemanticKITTIExample\\sample_0002.ply/morton3_code",
+      "group": "real_cloud",
+      "stage": "morton3_code",
+      "rows": 125756,
+      "file": "data\\SemanticKITTIExample\\sample_0002.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 2.8245,
+        "p10_ms": 2.4908,
+        "p90_ms": 5.6645,
+        "samples_ms": [
+          5.6645,
+          2.5962,
+          2.4049,
+          2.8079,
+          2.7596,
+          2.742,
+          6.0029,
+          3.9199,
+          4.8315,
+          5.0629,
+          2.86,
+          3.2151,
+          2.5961,
+          3.5267,
+          2.9127,
+          2.7216,
+          6.3103,
+          2.6262,
+          2.4213,
+          2.8245,
+          2.4908
+        ]
+      },
+      "after": {
+        "median_ms": 2.563,
+        "p10_ms": 2.1485,
+        "p90_ms": 4.268,
+        "samples_ms": [
+          2.1575,
+          2.0837,
+          2.1485,
+          3.3586,
+          2.497,
+          2.563,
+          3.421,
+          4.3694,
+          4.2518,
+          3.4766,
+          4.268,
+          4.0492,
+          2.37,
+          4.155,
+          2.5226,
+          2.4364,
+          2.5904,
+          2.1652,
+          2.1301,
+          5.3867,
+          2.1588
+        ]
+      },
+      "speedup": 1.1020288724151384,
+      "paired_speedups": [
+        2.6254924681344147,
+        1.245956711618755,
+        1.1193390737723994,
+        0.8360328708390401,
+        1.1051661994393271,
+        1.0698400312134217,
+        1.7547208418591058,
+        0.8971254634503594,
+        1.136342255044922,
+        1.4562791232813668,
+        0.6701030927835051,
+        0.7940086930751754,
+        1.0954008438818563,
+        0.8487845968712394,
+        1.1546420359946086,
+        1.1170579543588903,
+        2.4360330450895615,
+        1.2129133567337889,
+        1.1367071968452185,
+        0.5243470028032005,
+        1.1537891421159905
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\SemanticKITTIExample\\sample_0002.ply/morton3_sort",
+      "group": "real_cloud",
+      "stage": "morton3_sort",
+      "rows": 125756,
+      "file": "data\\SemanticKITTIExample\\sample_0002.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 15.8086,
+        "p10_ms": 14.3136,
+        "p90_ms": 18.5231,
+        "samples_ms": [
+          17.9207,
+          16.3309,
+          25.3293,
+          16.1906,
+          15.8164,
+          16.2031,
+          15.7487,
+          15.4387,
+          15.8086,
+          14.8566,
+          15.4686,
+          14.3618,
+          13.8555,
+          13.8211,
+          16.5432,
+          14.9789,
+          16.2543,
+          15.3908,
+          14.3136,
+          18.5231,
+          19.4219
+        ]
+      },
+      "after": {
+        "median_ms": 16.5947,
+        "p10_ms": 14.7118,
+        "p90_ms": 21.621,
+        "samples_ms": [
+          16.5947,
+          21.621,
+          15.4774,
+          25.9009,
+          15.1246,
+          20.8463,
+          14.7118,
+          21.5825,
+          15.1278,
+          20.6081,
+          15.1189,
+          20.1189,
+          14.8794,
+          19.304,
+          14.3025,
+          20.373,
+          14.6379,
+          24.8035,
+          15.303,
+          19.8659,
+          15.7454
+        ]
+      },
+      "speedup": 0.9526294539822956,
+      "paired_speedups": [
+        1.079905029919191,
+        0.7553258406179179,
+        1.6365345600682286,
+        0.6250979695686251,
+        1.045740052629491,
+        0.7772650302451753,
+        1.0704808385105833,
+        0.7153341827869802,
+        1.045003239069792,
+        0.7209107098665088,
+        1.0231299896156467,
+        0.7138461844335426,
+        0.9311867414008629,
+        0.715970783257356,
+        1.1566649187205034,
+        0.7352329062975506,
+        1.1104256758141537,
+        0.6205092023303164,
+        0.9353460105861595,
+        0.9324067875102563,
+        1.2334967673098176
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\SemanticKITTIExample\\sample_0002.ply/down_once",
+      "group": "real_cloud",
+      "stage": "down_once",
+      "rows": 125756,
+      "file": "data\\SemanticKITTIExample\\sample_0002.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 4.0239,
+        "p10_ms": 3.6985,
+        "p90_ms": 5.0338,
+        "samples_ms": [
+          3.8997,
+          3.4435,
+          3.5487,
+          4.0239,
+          3.8249,
+          4.0912,
+          3.9685,
+          3.9969,
+          4.3974,
+          3.9918,
+          4.5443,
+          4.5103,
+          3.6985,
+          3.844,
+          3.7912,
+          6.4508,
+          5.0338,
+          4.1836,
+          4.4932,
+          4.6041,
+          7.5317
+        ]
+      },
+      "after": {
+        "median_ms": 4.1919,
+        "p10_ms": 3.7441,
+        "p90_ms": 5.4192,
+        "samples_ms": [
+          4.0652,
+          3.9753,
+          3.7123,
+          3.7441,
+          3.7106,
+          4.7594,
+          3.9434,
+          4.414,
+          4.9668,
+          4.0881,
+          4.1177,
+          5.2648,
+          3.7624,
+          4.1919,
+          3.824,
+          6.4385,
+          5.4192,
+          4.2517,
+          4.4522,
+          4.2649,
+          7.4917
+        ]
+      },
+      "speedup": 0.9599227080798682,
+      "paired_speedups": [
+        0.9592885958870413,
+        0.866223932784947,
+        0.9559302858066429,
+        1.0747309099650117,
+        1.0308036436155879,
+        0.8596041517838382,
+        1.006365065679363,
+        0.9055052106932489,
+        0.8853587823145688,
+        0.9764438247596684,
+        1.1036015251232483,
+        0.8566897128096034,
+        0.9830161598979376,
+        0.9170066079820606,
+        0.9914225941422594,
+        1.001910382853149,
+        0.9288824918807205,
+        0.9839828774372605,
+        1.0092089304164231,
+        1.0795329316044924,
+        1.0053392420945846
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    },
+    {
+      "label": "data\\SemanticKITTIExample\\sample_0002.ply/build_hierarchy",
+      "group": "real_cloud",
+      "stage": "build_hierarchy",
+      "rows": 125756,
+      "file": "data\\SemanticKITTIExample\\sample_0002.ply",
+      "exact_equal": true,
+      "inputs_unchanged": true,
+      "before": {
+        "median_ms": 53.6145,
+        "p10_ms": 41.5863,
+        "p90_ms": 67.734,
+        "samples_ms": [
+          33.9413,
+          42.2903,
+          50.594,
+          45.7563,
+          38.7965,
+          42.1222,
+          41.5863,
+          57.5289,
+          53.6145,
+          55.1379,
+          55.7746,
+          49.0841,
+          49.0739,
+          49.6886,
+          58.371,
+          61.6042,
+          64.1634,
+          67.734,
+          67.1249,
+          77.9782,
+          76.961
+        ]
+      },
+      "after": {
+        "median_ms": 54.45,
+        "p10_ms": 41.3283,
+        "p90_ms": 72.2754,
+        "samples_ms": [
+          37.6504,
+          43.019,
+          41.3283,
+          40.6267,
+          65.5529,
+          64.5405,
+          46.7122,
+          49.1248,
+          52.7444,
+          54.2633,
+          46.9074,
+          54.3551,
+          55.7704,
+          54.5083,
+          54.45,
+          60.4951,
+          73.9593,
+          68.0013,
+          68.2894,
+          72.2754,
+          75.9027
+        ]
+      },
+      "speedup": 0.98465564738292,
+      "paired_speedups": [
+        0.9014857743875231,
+        0.9830609730584161,
+        1.2241974627555452,
+        1.1262617933526475,
+        0.5918349912818504,
+        0.6526475623833098,
+        0.8902663543999212,
+        1.1710765234667622,
+        1.016496538021098,
+        1.0161177075481955,
+        1.1890362714624985,
+        0.903026578922677,
+        0.8799273449715261,
+        0.9115786036255029,
+        1.0720110192837466,
+        1.0183337162844595,
+        0.867550125542021,
+        0.9960691927948435,
+        0.9829475731226222,
+        1.0789037487167141,
+        1.013942850517834
+      ],
+      "pair_order": [
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ],
+        [
+          "after",
+          "before"
+        ],
+        [
+          "before",
+          "after"
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"correctness":"passed","cases":447,"checks":["byte equality","intermediate buffers","all 16 symbols","empty and single-symbol streams","random chunk boundaries","bidirectional decode","encoder and decoder reset","bytes consumed/remaining","unit-frequency boundary CDFs","long E3 pending-bit runs"],"benchmarks":[]}

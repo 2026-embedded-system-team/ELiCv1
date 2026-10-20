@@ -4,6 +4,10 @@
 
 本机为 Windows + CPU PyTorch，没有 CUDA/TorchSparse。CPU 模块加速和几何/整数熵编码的验证结果不能代替完整神经网络的 GPU 验收。原模型结构、checkpoint、预测精度和二进制格式保持原样；异步编码通过 `--async_entropy True` 显式开启。
 
+2026-10-20 新增访存优化：`BitReader` 用有界 `memcpy` 一次读取相邻 4 字节，放入 64 位位缓存，保留尾部补零和逻辑已消费字节数。以本次修改前的优化版本为基线，预热 3 次、交替测试 15 轮；四份 Ford/SemanticKITTI 完整样例（posQ=16、逐层经验 CDF）的 CPU 整数解码中位数合计从 **48.9337 ms 降至 42.7891 ms**，即 **1.1436×、耗时下降 12.56%**。均匀合成输入为 0.993×（约慢 0.75%），高度集中输入为 1.005×，没有明确收益。该增量比较单独保留，不与此前基于冻结原版的结果相乘或合并，也不代表 GPU/完整模型加速。Morton/CDF 批处理试验没有稳定收益，已撤回。
+
+本次验证为 87 项测试及 49 项子测试通过、3 项 CUDA 测试跳过；另有 5,959,833 项读位检查、24 个解码用例、4 份真实样例和 447 项原版码流兼容性检查通过。方法、逐样例结果和复现说明见 [算术编码补充说明](reports/arithmetic_notes.md#incremental-memory-io-update-2026-10-20)，数据见 [报告 JSON](reports/memory_io_benchmark.json)、[CSV](reports/memory_io_benchmark.csv) 和 [原始测量](benchmarks/results/memory_io_20261020/bitreader_final.json)。
+
 在仓库根目录执行，使用具有 PyTorch、NumPy、pytest、pandas 的 Python；独立算术核测试还需要 g++ 或 clang++。
 
 ```powershell
@@ -15,6 +19,8 @@ $elicPython = 'C:\Users\LinkZelda\miniconda3\python.exe'
 & $elicPython benchmarks/bench_modules.py --device cpu --threads 1 --repeats 11
 & $elicPython benchmarks/bench_boe.py
 & $elicPython benchmarks/benchmark_arithmetic.py --benchmark --geometry-histograms --output reports/arithmetic_benchmark.json
+# 单独复测 2026-10-20 的访存增量，保留原始测量文件
+& $elicPython benchmarks/bench_bitreader_batch.py --before benchmarks/results/memory_io_20261020/before/csrc/arithmetic_core.h --benchmark --geometry-histograms --output benchmarks/results/memory_io_20261020/bitreader_retest.json
 ```
 
 性能基准逐个运行，避免互相争用 CPU。使用原始与优化版本交替计时的中位数，原始样本存入 JSON。`benchmarks/reference` 冻结原始源码，`manifest.json` 记录版本和 SHA-256。`pytest.ini` 将临时测试文件放在工作区内。

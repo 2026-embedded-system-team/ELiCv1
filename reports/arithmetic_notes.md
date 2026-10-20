@@ -13,7 +13,7 @@ symbol order, padding and finish/reset behavior are preserved. Optimizations:
 - Release Python's GIL around the pure Tensor encode/decode chunk methods.
   Python byte creation and stream reset still hold the GIL.
 
-## Measured CPU results
+## Historical CPU results (frozen original baseline)
 
 These are isolated integer-core measurements with g++ `-O3 -std=c++17`, not
 GPU neural-network or end-to-end codec measurements. Each row uses nine
@@ -39,6 +39,58 @@ Real sample rows use actual quantized hierarchy occupancy symbols and their
 per-layer empirical histograms; **they do not use the model's predicted CDFs**.
 The four clouds contain 80,278–126,012 input points, 12 layers each, and
 473,004–496,866 two-stage symbols each, at position quantization 16.
+
+## Incremental memory-I/O update (2026-10-20)
+
+`BitReader` now loads four adjacent bytes with a bounded `memcpy` into a 64-bit
+bit reservoir, reducing refill operations and branches. Explicit byte order,
+the final zero padding, and logical consumed-byte counts are preserved; the
+last zero to three bytes use bounded byte loads.
+
+This comparison uses the immediately preceding optimized header saved in
+`benchmarks/results/memory_io_20261020/before/csrc/arithmetic_core.h`, not the
+frozen original above. It measures the single-threaded CPU integer decoder with
+g++ 15.2.0, `-O3 -std=c++17 -DNDEBUG`, three warm-ups and 15 alternating
+before/after pairs. Timing includes decoder reset/stream copy and `decode_chunk`;
+both decoders use equally preallocated outputs. CDF/input generation and
+compilation are excluded. The real samples use position quantization 16 and
+per-layer empirical occupancy CDFs, not neural-network predictions.
+
+| Input | Before median (ms) | After median (ms) | Speedup |
+| --- | ---: | ---: | ---: |
+| Ford sample 0001 | 12.0767 | 10.6722 | 1.132x |
+| Ford sample 0002 | 11.2977 | 9.9293 | 1.138x |
+| SemanticKITTI sample 0001 | 11.7730 | 10.3471 | 1.138x |
+| SemanticKITTI sample 0002 | 13.7863 | 11.8405 | 1.164x |
+| Sum of the four sample medians | **48.9337** | **42.7891** | **1.1436x** |
+
+The sum falls by **12.56%**; this aggregate is a ratio of summed per-sample
+medians, not an average speedup. Uniform synthetic input is 0.993x
+(18.2594 to 18.3967 ms, about 0.75% slower), and concentrated input is 1.005x
+(6.6669 to 6.6342 ms), so neither shows a clear gain. Random weighted and
+low-probability synthetic inputs reach 1.136x and 1.162x respectively. These
+incremental figures must not be multiplied by or merged with the historical
+timings. They establish CPU integer-decoder performance only; CUDA and complete
+neural-codec performance remain unverified.
+
+Validation passed 5,959,833 reader checks, 24 decoder cases, four real geometry
+streams and 447 original arithmetic compatibility cases. The full pytest run
+reported 87 passed, 49 subtests passed and three CUDA-dependent skips. The
+Morton XYZ batching trial changed total real-cloud hierarchy latency from
+161.1505 to 162.3079 ms without a stable improvement. CDF cache blocking also
+showed no stable gain in its separate CDF benchmark. Both changes were reverted.
+
+Raw samples, compiler/environment details, source hashes and validation are in
+[the retained benchmark](../benchmarks/results/memory_io_20261020/bitreader_final.json),
+[the experiment summary](../benchmarks/results/memory_io_20261020/experiment_summary.json)
+and [the pytest log](../benchmarks/results/memory_io_20261020/tests_final.txt).
+The report includes a [benchmark JSON copy](memory_io_benchmark.json) and
+[CSV comparison](memory_io_benchmark.csv). Reproduce from the repository root,
+writing a separate result to preserve the original measurements:
+
+```powershell
+& 'C:\Users\LinkZelda\miniconda3\python.exe' benchmarks/bench_bitreader_batch.py --before benchmarks/results/memory_io_20261020/before/csrc/arithmetic_core.h --benchmark --geometry-histograms --output benchmarks/results/memory_io_20261020/bitreader_retest.json
+```
 
 ## Correctness and reproduction
 

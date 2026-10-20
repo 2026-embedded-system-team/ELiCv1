@@ -1,0 +1,10 @@
+﻿scope,module,sample,baseline_kind,baseline_ms,optimized_ms,speedup
+memory_io_incremental_cpu,bitreader_decode,uniform,previous optimized implementation immediately before the memory-I/O change,18.2594,18.3967,0.992536705
+memory_io_incremental_cpu,bitreader_decode,concentrated,previous optimized implementation immediately before the memory-I/O change,6.6669,6.6342,1.004929
+memory_io_incremental_cpu,bitreader_decode,random_weighted,previous optimized implementation immediately before the memory-I/O change,26.0903,22.963,1.13618865
+memory_io_incremental_cpu,bitreader_decode,random_rare_symbols,previous optimized implementation immediately before the memory-I/O change,27.192,23.3921,1.16244373
+memory_io_incremental_cpu,bitreader_decode,histogram_Ford_sample_0001,previous optimized implementation immediately before the memory-I/O change,12.0767,10.6722,1.13160361
+memory_io_incremental_cpu,bitreader_decode,histogram_Ford_sample_0002,previous optimized implementation immediately before the memory-I/O change,11.2977,9.9293,1.13781435
+memory_io_incremental_cpu,bitreader_decode,histogram_SemanticKITTI_sample_0001,previous optimized implementation immediately before the memory-I/O change,11.773,10.3471,1.13780673
+memory_io_incremental_cpu,bitreader_decode,histogram_SemanticKITTI_sample_0002,previous optimized implementation immediately before the memory-I/O change,13.7863,11.8405,1.16433428
+memory_io_incremental_cpu,bitreader_decode,four_real_clouds_sum_medians,previous optimized implementation immediately before the memory-I/O change,48.9337,42.7891,1.143601992096118

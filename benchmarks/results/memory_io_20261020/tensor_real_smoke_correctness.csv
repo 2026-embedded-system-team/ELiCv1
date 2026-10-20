@@ -1,0 +1,5 @@
+label,group,stage,rows,length,needs_normalization,file,before_median_ms,before_p10_ms,before_p90_ms,after_median_ms,after_p10_ms,after_p90_ms,speedup,exact_equal,inputs_unchanged
+data\FordExample\sample_0001.ply/morton3_code,real_cloud,morton3_code,80332,,,data\FordExample\sample_0001.ply,,,,,,,,True,True
+data\FordExample\sample_0001.ply/morton3_sort,real_cloud,morton3_sort,80332,,,data\FordExample\sample_0001.ply,,,,,,,,True,True
+data\FordExample\sample_0001.ply/down_once,real_cloud,down_once,80332,,,data\FordExample\sample_0001.ply,,,,,,,,True,True
+data\FordExample\sample_0001.ply/build_hierarchy,real_cloud,build_hierarchy,80332,,,data\FordExample\sample_0001.ply,,,,,,,,True,True
